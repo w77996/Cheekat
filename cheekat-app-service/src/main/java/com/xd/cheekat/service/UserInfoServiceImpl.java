@@ -32,4 +32,28 @@ public class UserInfoServiceImpl implements UserInfoService{
 		return null;
 	}
 
+	@Override
+	public int editUser(UserInfo user) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public UserInfo getUserByUserName(String phone) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addNewUser(UserInfo user) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public UserInfo getUserByOpenId(String openId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

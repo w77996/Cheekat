@@ -3,60 +3,66 @@ package com.xd.cheekat.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xd.cheekat.dao.GroupDetailsDao;
 import com.xd.cheekat.pojo.GroupDetails;
 @Service
 public class GroupDetailsServiceImpl implements GroupDetailsService{
 
+	@Autowired
+	private GroupDetailsDao groupDetailsDao;
+	
 	@Override
 	public List<Map<String, Object>> getUserGroupByImId(String groupId) {
 		// TODO Auto-generated method stub
-		return null;
+		return groupDetailsDao.getUserGroupByImId(groupId);
 	}
 
 	@Override
 	public void addGroupDetails(GroupDetails gd) {
 		// TODO Auto-generated method stub
+		groupDetailsDao.insertSelective(gd);
 		
 	}
 
 	@Override
-	public GroupDetails getGroupDetailsByGroupIdAndUserId(long parseLong,
-			long parseLong2) {
+	public GroupDetails getGroupDetailsByGroupIdAndUserId(long groupId,
+			long userId) {
 		// TODO Auto-generated method stub
-		return null;
+		return groupDetailsDao.getGroupDetailsByGroupIdAndUserId(groupId,userId);
 	}
 
 	@Override
 	public void removeGroupDetails(Long detailsId) {
 		// TODO Auto-generated method stub
-		
+		groupDetailsDao.deleteByPrimaryKey(detailsId);
 	}
 
 	@Override
-	public int deleteUserFromGroup(long user_id, long group_id) {
+	public int deleteUserFromGroup(long userId, long groupId) {
 		// TODO Auto-generated method stub
-		return 0;
+		return groupDetailsDao.deleteUserFromGroup(userId,groupId);
 	}
 
 	@Override
-	public String deleteUserAdminFromGroup(long user_id, long group_id) {
+	public String deleteUserAdminFromGroup(long userId, long groupId) {
 		// TODO Auto-generated method stub
-		return null;
+		return groupDetailsDao.deleteUserAdminFromGroup(userId,groupId);
 	}
 
 	@Override
-	public List<Map<String, Object>> getUserGroupDetails(long group_id) {
+	public List<Map<String, Object>> getUserGroupDetails(long groupId) {
 		// TODO Auto-generated method stub
-		return null;
+		return groupDetailsDao.getUserGroupDetails(groupId);
 	}
 
 	@Override
-	public GroupDetails getUserGroupDetailsIsAdmin(long user_id, long group_id,
-			int is_Admin) {
+	public GroupDetails getUserGroupDetailsIsAdmin(long userId, long groupId,
+			int isAdmin) {
 		// TODO Auto-generated method stub
-		return null;
+		return groupDetailsDao.getUserGroupDetailsIsAdmin(userId,groupId,isAdmin);
 	}
 
 }

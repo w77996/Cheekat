@@ -14,4 +14,6 @@ public interface WalletDao {
     int updateByPrimaryKeySelective(Wallet record);
 
     int updateByPrimaryKey(Wallet record);
+
+	Wallet findWalletByUserId(long userId);
 }

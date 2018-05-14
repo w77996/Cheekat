@@ -19,6 +19,7 @@ import RespCode.RespCode;
 import com.xd.cheekat.common.Constant;
 import com.xd.cheekat.pojo.UserInfo;
 import com.xd.cheekat.service.UserInfoService;
+import com.xd.cheekat.service.WalletService;
 import com.xd.cheekat.util.DateUtil;
 import com.xd.cheekat.util.FileUtil;
 import com.xd.cheekat.util.ImUtils;
@@ -30,6 +31,9 @@ public class UserController {
 	
 	@Autowired
 	private UserInfoService userInfoService;
+	
+	@Autowired
+	private WalletService walletService;
 	
 	@RequestMapping(value = "/getUserId")
 	public String getUserById(@RequestParam long userId){
@@ -211,4 +215,46 @@ public class UserController {
 
     }
 
+    /**
+     * 用户上传主页头像
+     *
+     * @param userId
+     * @param headImg
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/open/uploadImg", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String uploadImg(@RequestParam String userId, @RequestParam String headImg, HttpServletRequest request) {
+        String returnStr = JsonUtils.writeJson(0, 0, "参数为空");
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(headImg)) {
+            return returnStr;
+        }
+        long user_id = Long.parseLong(userId);
+        UserInfo userExist = userInfoService.selectByPrimaryKey(user_id);
+        if (null == userExist) {
+            return JsonUtils.writeJson(0, 4, "用户不存在");
+        }
+        String path = Constant.USER_IMG_PATH;
+        //获取绝对路径
+       String uploadPath = request.getSession().getServletContext().getRealPath("/");
+       // String uploadPath = "D:\\32+4";
+        log.info("uploadPath路径：" + uploadPath);
+        File file = new File(uploadPath + Constant.USER_IMG_PATH);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+       // String newimagepath=headImg.replaceAll("data:image/jpeg;base64,", "");
+        String fileName = System.currentTimeMillis() + String.valueOf((int) ((Math.random() * 9 + 1) * 100000)) + ".jpg";
+        boolean isSuccess = FileUtil.CreateImgBase64(headImg, uploadPath + Constant.USER_IMG_PATH + fileName);
+        if (!isSuccess) {
+            return JsonUtils.writeJson(0, 24, "图片上传失败");
+        }
+        int i = userIndexImgService.addUserIndexImg(user_id, Constant.CONTEXT_PATH+path + fileName);
+        if (0 < i) {
+            return JsonUtils.writeJson("上传成功", 1);
+        } else {
+            return JsonUtils.writeJson(0, 0, "上传失败");
+        }
+    }
 }

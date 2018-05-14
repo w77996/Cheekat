@@ -31,8 +31,8 @@ public class UserInfo implements Serializable{
     private String city;
 
     private Integer invisible;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date createTime;
+    
+    private String createTime;
 
     public Long getUserId() {
         return userId;
@@ -105,11 +105,11 @@ public class UserInfo implements Serializable{
     public void setInvisible(Integer invisible) {
         this.invisible = invisible;
     }
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

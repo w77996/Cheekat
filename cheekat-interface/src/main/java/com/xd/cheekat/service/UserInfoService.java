@@ -17,4 +17,6 @@ public interface UserInfoService {
 	UserInfo getUserByUserName(String phone);
 
 	void addNewUser(UserInfo user);
+
+	UserInfo getUserByOpenId(String openId);
 }
