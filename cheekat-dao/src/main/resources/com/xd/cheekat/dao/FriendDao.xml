@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xd.cheekat.dao.FriendDao">
+	<resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.Friend">
+		<id column="friend_id" property="friendId" jdbcType="BIGINT" />
+		<result column="user_id_fr1" property="userIdFr1" jdbcType="BIGINT" />
+		<result column="user_id_fr2" property="userIdFr2" jdbcType="BIGINT" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<select id="getUserFriends" parameterType="java.lang.Long" resultMap="java.util.Map">
+		select u.user_id,u.head_img,u.user_name,u.sex from (select
+		f.user_id_fr2 from tb_friend f LEFT OUTER JOIN tb_user u on u.user_id
+		= f.user_id_fr1 where f.status =2 and u.user_id =#{userId}) c,tb_user
+		u where c.user_id_fr2 = u.user_id
+	</select>
+
+	<sql id="Base_Column_List">
+		friend_id, user_id_fr1, user_id_fr2, status, create_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from tb_friend
+		where friend_id = #{friendId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from tb_friend
+		where friend_id = #{friendId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.xd.cheekat.pojo.Friend">
+		insert into tb_friend (friend_id, user_id_fr1, user_id_fr2,
+		status, create_time)
+		values (#{friendId,jdbcType=BIGINT}, #{userIdFr1,jdbcType=BIGINT},
+		#{userIdFr2,jdbcType=BIGINT},
+		#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xd.cheekat.pojo.Friend">
+		insert into tb_friend
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="friendId != null">
+				friend_id,
+			</if>
+			<if test="userIdFr1 != null">
+				user_id_fr1,
+			</if>
+			<if test="userIdFr2 != null">
+				user_id_fr2,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="friendId != null">
+				#{friendId,jdbcType=BIGINT},
+			</if>
+			<if test="userIdFr1 != null">
+				#{userIdFr1,jdbcType=BIGINT},
+			</if>
+			<if test="userIdFr2 != null">
+				#{userIdFr2,jdbcType=BIGINT},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.Friend">
+		update tb_friend
+		<set>
+			<if test="userIdFr1 != null">
+				user_id_fr1 = #{userIdFr1,jdbcType=BIGINT},
+			</if>
+			<if test="userIdFr2 != null">
+				user_id_fr2 = #{userIdFr2,jdbcType=BIGINT},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where friend_id = #{friendId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.Friend">
+		update tb_friend
+		set user_id_fr1 = #{userIdFr1,jdbcType=BIGINT},
+		user_id_fr2 = #{userIdFr2,jdbcType=BIGINT},
+		status = #{status,jdbcType=INTEGER},
+		create_time = #{createTime,jdbcType=TIMESTAMP}
+		where friend_id = #{friendId,jdbcType=BIGINT}
+	</update>
+</mapper>

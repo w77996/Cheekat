@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xd.cheekat.dao.WalletDao" >
+  <resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.Wallet" >
+    <id column="wallet_id" property="walletId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    wallet_id, user_id, money
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_wallet
+    where wallet_id = #{walletId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_wallet
+    where wallet_id = #{walletId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xd.cheekat.pojo.Wallet" >
+    insert into tb_wallet (wallet_id, user_id, money
+      )
+    values (#{walletId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{money,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xd.cheekat.pojo.Wallet" >
+    insert into tb_wallet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="walletId != null" >
+        wallet_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="walletId != null" >
+        #{walletId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.Wallet" >
+    update tb_wallet
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where wallet_id = #{walletId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.Wallet" >
+    update tb_wallet
+    set user_id = #{userId,jdbcType=BIGINT},
+      money = #{money,jdbcType=DOUBLE}
+    where wallet_id = #{walletId,jdbcType=BIGINT}
+  </update>
+</mapper>

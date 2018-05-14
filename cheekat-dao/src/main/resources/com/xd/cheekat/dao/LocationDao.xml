@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xd.cheekat.dao.LocationDao">
+	<resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.Location">
+		<id column="loc_id" property="locId" jdbcType="BIGINT" />
+		<result column="lat" property="lat" jdbcType="DOUBLE" />
+		<result column="lng" property="lng" jdbcType="DOUBLE" />
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<collection property="user" ofType="com.xd.cheekat.pojo.UserInfo">
+			<id column="user_id" property="userId" jdbcType="BIGINT" />
+			<result column="head_img" property="headImg" jdbcType="VARCHAR" />
+			<result column="user_name" property="userName" jdbcType="VARCHAR" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="sex" property="sex" jdbcType="INTEGER" />
+			<result column="birth" property="birth" jdbcType="VARCHAR" />
+			<result column="height" property="height" jdbcType="INTEGER" />
+			<result column="city" property="city" jdbcType="VARCHAR" />
+			<result column="invisible" property="invisible" jdbcType="INTEGER" />
+			<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		</collection>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		loc_id, lat, lng, last_time, user_id
+	</sql>
+
+	<select id="getLocationByLatLng" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select a.*,b.* from tb_location a, tb_user b where a.user_id =
+		b.user_id and a.user_id <![CDATA[ <> ]]>
+		#{userId} and a.lat <![CDATA[ > ]]>
+		#{rightBottomPoint0} and a.lat <![CDATA[ < ]]>
+		#{leftTopPoint0} and a.lng <![CDATA[ > ]]>
+		#{leftTopPoint1} and a.lng <![CDATA[ < ]]>
+		#{rightBottomPoint1}
+	</select>
+
+	<select id="getLimitLocationByLatLng" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		a.*,b.*,(POWER(MOD(ABS(lng
+		- #{lng}),360),2) + POWER(ABS(lat - #{lat}),2)) AS distance from
+		tb_location a, tb_user b where a.user_id = b.user_id and a.user_id <![CDATA[ <> ]]> #{userId}
+		 ORDER BY distance 
+		 <if test=" start != null and count != null" >
+		  LIMIT  #{start,jdbcType=INTERGE},#{count,jdbcType=INTERGE}
+		 </if>
+		
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from tb_location
+		where loc_id = #{locId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		tb_location
+		where loc_id = #{locId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.xd.cheekat.pojo.Location">
+		insert into tb_location
+		(loc_id, lat, lng,
+		last_time, user_id)
+		values (#{locId,jdbcType=BIGINT},
+		#{lat,jdbcType=DOUBLE},
+		#{lng,jdbcType=DOUBLE},
+		#{lastTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xd.cheekat.pojo.Location">
+		insert into tb_location
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="locId != null">
+				loc_id,
+			</if>
+			<if test="lat != null">
+				lat,
+			</if>
+			<if test="lng != null">
+				lng,
+			</if>
+			<if test="lastTime != null">
+				last_time,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="locId != null">
+				#{locId,jdbcType=BIGINT},
+			</if>
+			<if test="lat != null">
+				#{lat,jdbcType=DOUBLE},
+			</if>
+			<if test="lng != null">
+				#{lng,jdbcType=DOUBLE},
+			</if>
+			<if test="lastTime != null">
+				#{lastTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.Location">
+		update tb_location
+		<set>
+			<if test="lat != null">
+				lat = #{lat,jdbcType=DOUBLE},
+			</if>
+			<if test="lng != null">
+				lng = #{lng,jdbcType=DOUBLE},
+			</if>
+			<if test="lastTime != null">
+				last_time = #{lastTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+		</set>
+		where loc_id = #{locId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.Location">
+		update tb_location
+		set lat = #{lat,jdbcType=DOUBLE},
+		lng = #{lng,jdbcType=DOUBLE},
+		last_time = #{lastTime,jdbcType=TIMESTAMP},
+		user_id =
+		#{userId,jdbcType=BIGINT}
+		where loc_id = #{locId,jdbcType=BIGINT}
+	</update>
+</mapper>
