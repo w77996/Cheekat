@@ -85,24 +85,24 @@ public class WalletController {
 			return JsonUtils.writeJson(0, 4, "用户不存在");
 		}
 
-		if (Constant.PAY_TYPE_WECHAT == pay_type) {
-			 if (Constant.ORDER_TYPE_TRADE == taskType) {
-				// 微信支付充值
-				String record_sn = walletRecordService.addWalletRecordOrder(user_id,money,Constant.PAY_TYPE_WECHAT,Constant.ORDER_TYPE_TRADE);
-				if (null == record_sn) {
-					return JsonUtils.writeJson(0, 19, "订单生成失败");
-				}
-				SortedMap<Object, Object> map = WxPayUtil.getPreperIdFromWX(
-						record_sn, PayCommonUtil.getIpAddress(request),
-						Constant.APP_NAME + Constant.RECHARGE, price);
-				if (null == map) {
-					return JsonUtils.writeJson(0, 19, "订单生成失败");
-				}
-				return JsonUtils.writeJson(1, "请求成功", map, "object");
-			} else {
-				return JsonUtils.writeJson(0, 0, "参数错误");
-			}
-		}
+//		if (Constant.PAY_TYPE_WECHAT == pay_type) {
+//			 if (Constant.ORDER_TYPE_TRADE == taskType) {
+//				// 微信支付充值
+//				String record_sn = walletRecordService.addWalletRecordOrder(user_id,money,Constant.PAY_TYPE_WECHAT,Constant.ORDER_TYPE_TRADE);
+//				if (null == record_sn) {
+//					return JsonUtils.writeJson(0, 19, "订单生成失败");
+//				}
+//				SortedMap<Object, Object> map = WxPayUtil.getPreperIdFromWX(
+//						record_sn, PayCommonUtil.getIpAddress(request),
+//						Constant.APP_NAME + Constant.RECHARGE, price);
+//				if (null == map) {
+//					return JsonUtils.writeJson(0, 19, "订单生成失败");
+//				}
+//				return JsonUtils.writeJson(1, "请求成功", map, "object");
+//			} else {
+//				return JsonUtils.writeJson(0, 0, "参数错误");
+//			}
+//		}
 		return JsonUtils.writeJson(0, 0, "参数错误");
 	}
 }

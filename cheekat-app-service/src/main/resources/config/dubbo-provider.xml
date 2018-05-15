@@ -44,6 +44,12 @@
 	<dubbo:service interface="com.xd.cheekat.service.GroupDetailsService" ref="groupDetailsService"/>
 	<bean id="groupDetailsService" class="com.xd.cheekat.service.GroupDetailsServiceImpl" />
 	
-	<dubbo:service interface="com.xd.cheekat.service.friendService" ref="friendService"/>
+	<dubbo:service interface="com.xd.cheekat.service.FriendService" ref="friendService"/>
 	<bean id="friendService" class="com.xd.cheekat.service.FriendServiceImpl" />
+	
+	<dubbo:service interface="com.xd.cheekat.service.WalletService" ref="walletService"/>
+	<bean id="walletService" class="com.xd.cheekat.service.WalletServiceImpl" />
+	
+	<dubbo:service interface="com.xd.cheekat.service.UserIndexImgService" ref="userIndexImgService"/>
+	<bean id="userIndexImgService" class="com.xd.cheekat.service.UserIndexImgServiceImpl" />
 </beans>

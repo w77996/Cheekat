@@ -17,7 +17,7 @@ public class GroupDetailsServiceImpl implements GroupDetailsService{
 	@Override
 	public List<Map<String, Object>> getUserGroupByImId(String groupId) {
 		// TODO Auto-generated method stub
-		return groupDetailsDao.getUserGroupByImId(groupId);
+		return groupDetailsDao.getUserGroupByImId(Long.parseLong(groupId));
 	}
 
 	@Override
@@ -35,9 +35,9 @@ public class GroupDetailsServiceImpl implements GroupDetailsService{
 	}
 
 	@Override
-	public void removeGroupDetails(Long detailsId) {
+	public void removeGroupDetails(long groupId,long userId) {
 		// TODO Auto-generated method stub
-		groupDetailsDao.deleteByPrimaryKey(detailsId);
+		groupDetailsDao.removeGroupDetails(groupId,userId);
 	}
 
 	@Override

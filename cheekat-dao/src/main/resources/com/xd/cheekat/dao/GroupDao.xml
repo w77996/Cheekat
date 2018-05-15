@@ -1,93 +1,107 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xd.cheekat.dao.GroupDao" >
-  <resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.Group" >
-    <id column="group_id" property="groupId" jdbcType="BIGINT" />
-    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="im_group_id" property="imGroupId" jdbcType="VARCHAR" />
-    <result column="admin_id" property="adminId" jdbcType="BIGINT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    group_id, group_name, create_time, im_group_id, admin_id
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_group
-    where group_id = #{groupId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from tb_group
-    where group_id = #{groupId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.xd.cheekat.pojo.Group" >
-    insert into tb_group (group_id, group_name, create_time, 
-      im_group_id, admin_id)
-    values (#{groupId,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{imGroupId,jdbcType=VARCHAR}, #{adminId,jdbcType=BIGINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.xd.cheekat.pojo.Group" >
-    insert into tb_group
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="groupId != null" >
-        group_id,
-      </if>
-      <if test="groupName != null" >
-        group_name,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="imGroupId != null" >
-        im_group_id,
-      </if>
-      <if test="adminId != null" >
-        admin_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="groupId != null" >
-        #{groupId,jdbcType=BIGINT},
-      </if>
-      <if test="groupName != null" >
-        #{groupName,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="imGroupId != null" >
-        #{imGroupId,jdbcType=VARCHAR},
-      </if>
-      <if test="adminId != null" >
-        #{adminId,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.Group" >
-    update tb_group
-    <set >
-      <if test="groupName != null" >
-        group_name = #{groupName,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="imGroupId != null" >
-        im_group_id = #{imGroupId,jdbcType=VARCHAR},
-      </if>
-      <if test="adminId != null" >
-        admin_id = #{adminId,jdbcType=BIGINT},
-      </if>
-    </set>
-    where group_id = #{groupId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.Group" >
-    update tb_group
-    set group_name = #{groupName,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      im_group_id = #{imGroupId,jdbcType=VARCHAR},
-      admin_id = #{adminId,jdbcType=BIGINT}
-    where group_id = #{groupId,jdbcType=BIGINT}
-  </update>
+<mapper namespace="com.xd.cheekat.dao.GroupDao">
+	<resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.Group">
+		<id column="group_id" property="groupId" jdbcType="BIGINT" />
+		<result column="group_name" property="groupName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="im_group_id" property="imGroupId" jdbcType="VARCHAR" />
+		<result column="admin_id" property="adminId" jdbcType="BIGINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		group_id, group_name, create_time, im_group_id, admin_id
+	</sql>
+	<select id="getGroupByNameAndAdminId" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select * from tb_group where group_name = #{groupName} and admin_id =
+		#{userId} limit 1
+	</select>
+	<select id="getUserGroup" parameterType="java.lang.Long"
+		resultType="java.util.Map">
+		select g.group_name,c.group_id,g.im_group_id,c.is_admin,g.create_time from
+		tb_group g,(select DISTINCT gd.group_id,gd.is_admin from
+		tb_group_details gd where gd.member_id =#{userId}) c where g.group_id
+		= c.group_id
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from tb_group
+		where group_id = #{groupId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from tb_group
+		where group_id = #{groupId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.xd.cheekat.pojo.Group">
+		insert into tb_group (group_id, group_name, create_time,
+		im_group_id, admin_id)
+		values (#{groupId,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{imGroupId,jdbcType=VARCHAR}, #{adminId,jdbcType=BIGINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xd.cheekat.pojo.Group">
+		insert into tb_group
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="groupId != null">
+				group_id,
+			</if>
+			<if test="groupName != null">
+				group_name,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="imGroupId != null">
+				im_group_id,
+			</if>
+			<if test="adminId != null">
+				admin_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="groupId != null">
+				#{groupId,jdbcType=BIGINT},
+			</if>
+			<if test="groupName != null">
+				#{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="imGroupId != null">
+				#{imGroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="adminId != null">
+				#{adminId,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.Group">
+		update tb_group
+		<set>
+			<if test="groupName != null">
+				group_name = #{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="imGroupId != null">
+				im_group_id = #{imGroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="adminId != null">
+				admin_id = #{adminId,jdbcType=BIGINT},
+			</if>
+		</set>
+		where group_id = #{groupId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.Group">
+		update tb_group
+		set group_name = #{groupName,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		im_group_id = #{imGroupId,jdbcType=VARCHAR},
+		admin_id = #{adminId,jdbcType=BIGINT}
+		where group_id = #{groupId,jdbcType=BIGINT}
+	</update>
 </mapper>

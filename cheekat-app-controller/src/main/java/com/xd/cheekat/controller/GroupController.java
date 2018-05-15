@@ -59,7 +59,7 @@ public class GroupController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/open/addGroup")
+	@RequestMapping(value = "/open/addGroup", produces = "text/html;charset=UTF-8")
 	public String addGroup(HttpServletRequest request) {
 		String groupName = request.getParameter("groupName");
 		String userId = request.getParameter("userId");
@@ -155,8 +155,9 @@ public class GroupController {
 			Group group = groupService.getGroupById(Long.parseLong(groupId));
 			if(group != null) {
 			GroupDetails gd = groupDetailsService.getGroupDetailsByGroupIdAndUserId(Long.parseLong(groupId), Long.parseLong(userId));
+			System.out.println(gd.toString());
 			if(gd != null) {
-				if(gd.getDetailsId() == 0) {
+				if(gd.getIsAdmin() == 0) {
 					returnStr = JsonUtils.writeJson(0, 14, "你不是群主");
 				}else {
 					GroupDetails gd1 = groupDetailsService.getGroupDetailsByGroupIdAndUserId(Long.parseLong(groupId), Long.parseLong(member));
@@ -165,7 +166,7 @@ public class GroupController {
 						if(user != null) {
 						boolean isSuccess = ImUtils.delSingleMember(group.getImGroupId(), user.getUserName());
 						if(isSuccess) {
-							groupDetailsService.removeGroupDetails(gd1.getDetailsId());
+							groupDetailsService.removeGroupDetails(gd1.getGroupId(),Long.parseLong(member));
 						    returnStr = JsonUtils.writeJson("删除成功",1);
 						}else {
 							returnStr = JsonUtils.writeJson(0, 29, "环信群成员删除失败");
@@ -271,10 +272,7 @@ public class GroupController {
 	 */
 	@RequestMapping(value="/open/getGroupList")
 	public String getUserGroup(@RequestParam String userId){
-		String returnStr = JsonUtils.writeJson(0, 0, "参数为空");
-		if(StringUtils.isBlank(userId)){
-			return returnStr;
-		}
+		
 		long user_id = Long.parseLong(userId);
 		//获取User下的群组
 		List<Map<String,Object>> list = groupService.getUserGroup(user_id);

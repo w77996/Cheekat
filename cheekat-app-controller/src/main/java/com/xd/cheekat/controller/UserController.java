@@ -1,6 +1,9 @@
 package com.xd.cheekat.controller;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import RespCode.RespCode;
 
 import com.xd.cheekat.common.Constant;
+import com.xd.cheekat.pojo.UserIndexImg;
 import com.xd.cheekat.pojo.UserInfo;
+import com.xd.cheekat.service.UserIndexImgService;
 import com.xd.cheekat.service.UserInfoService;
 import com.xd.cheekat.service.WalletService;
 import com.xd.cheekat.util.DateUtil;
@@ -31,10 +36,10 @@ public class UserController {
 	
 	@Autowired
 	private UserInfoService userInfoService;
-	
+	@Autowired
+	private UserIndexImgService userIndexImgService;
 	@Autowired
 	private WalletService walletService;
-	
 	@RequestMapping(value = "/getUserId")
 	public String getUserById(@RequestParam long userId){
 		UserInfo userInfo =userInfoService.selectByPrimaryKey(userId);
@@ -205,6 +210,7 @@ public class UserController {
             userResult = userInfoService.getUserByUserName(phone);
         } else if (Constant.LOGIN_TYPE_WECHAT == login_type) {
             user.setUserName(openId);
+            user.setOpenId(openId);
             userInfoService.addNewUser(user);
             userResult = userInfoService.getUserByUserName(openId);
         } else {
@@ -214,7 +220,6 @@ public class UserController {
         return JsonUtils.writeJson(1, "请求成功", userResult, "object");
 
     }
-
     /**
      * 用户上传主页头像
      *
@@ -223,38 +228,151 @@ public class UserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/open/uploadImg", produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/open/uploadImg")
     @ResponseBody
     public String uploadImg(@RequestParam String userId, @RequestParam String headImg, HttpServletRequest request) {
-        String returnStr = JsonUtils.writeJson(0, 0, "参数为空");
-        if (StringUtils.isBlank(userId) || StringUtils.isBlank(headImg)) {
-            return returnStr;
-        }
+       
         long user_id = Long.parseLong(userId);
         UserInfo userExist = userInfoService.selectByPrimaryKey(user_id);
         if (null == userExist) {
             return JsonUtils.writeJson(0, 4, "用户不存在");
         }
-        String path = Constant.USER_IMG_PATH;
-        //获取绝对路径
-       String uploadPath = request.getSession().getServletContext().getRealPath("/");
-       // String uploadPath = "D:\\32+4";
-        log.info("uploadPath路径：" + uploadPath);
-        File file = new File(uploadPath + Constant.USER_IMG_PATH);
+        Properties properties =  new PropertiesUtil().getProperites("config.properties");
+        String context_path = properties.getProperty("context_path", "");
+
+        String filePathName= request.getSession().getServletContext().getRealPath("/")+"/"+Constant.HEAD_IMG_PATH;;//存放路径
+        System.out.println(filePathName);
+        File file = new File(filePathName);
         if (!file.exists()) {
             file.mkdirs();
         }
-       // String newimagepath=headImg.replaceAll("data:image/jpeg;base64,", "");
+        System.out.println("filePathName"+filePathName);
         String fileName = System.currentTimeMillis() + String.valueOf((int) ((Math.random() * 9 + 1) * 100000)) + ".jpg";
-        boolean isSuccess = FileUtil.CreateImgBase64(headImg, uploadPath + Constant.USER_IMG_PATH + fileName);
+        boolean isSuccess = FileUtil.CreateImgBase64(headImg, filePathName + fileName);
         if (!isSuccess) {
             return JsonUtils.writeJson(0, 24, "图片上传失败");
         }
-        int i = userIndexImgService.addUserIndexImg(user_id, Constant.CONTEXT_PATH+path + fileName);
+        int i = userIndexImgService.addUserIndexImg(user_id, context_path+Constant.HEAD_IMG_PATH + fileName);
         if (0 < i) {
             return JsonUtils.writeJson("上传成功", 1);
         } else {
             return JsonUtils.writeJson(0, 0, "上传失败");
         }
+    }
+
+    /**
+	 * 用户是否存在
+	 * @Title:           userLogin
+	 * @Description:     TODO
+	 * @param:           @return   
+	 * @return:          String   
+	 * @throws
+	 */
+	@RequestMapping(value="/open/userExist")
+	@ResponseBody
+	public String userExist(@RequestParam(required=false) String phone,@RequestParam(required=true) String type,@RequestParam(required=false) String openId){
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		
+		if(Constant.LOGIN_TYPE_PHONE == Integer.parseInt(type)){
+			//通过手机查找用户是否存在
+			UserInfo user = userInfoService.getUserByUserName(phone);
+			if(null == user){
+				map.put("isFirst", true);
+			}else{
+				map.put("isFirst", false);
+			}
+			map.put("user", user);
+			return JsonUtils.writeJson(1, "请求成功", map, "object");
+			
+		}else if(Constant.LOGIN_TYPE_WECHAT == Integer.parseInt(type)){
+			//判断参数
+			if(StringUtils.isBlank(openId)){
+				return JsonUtils.writeJson(0, 0, "参数为空");
+			}
+
+			UserInfo wechatUser = userInfoService.getUserByOpenId(openId);
+			if(null != wechatUser){
+				return JsonUtils.writeJson(0,40,"微信已被绑定");
+			}
+
+			//查询user是否存在
+
+			UserInfo user = userInfoService.getUserByUserName(openId);
+			if(null == user){
+				map.put("isFirst", true);
+			}else{
+				map.put("isFirst", false);
+			}
+			map.put("user", user);
+			return JsonUtils.writeJson(1, "请求成功", map, "object");
+		}
+		
+		return  JsonUtils.writeJson(0, 0, "参数为空");
+	}
+
+	/**
+     * 获取用户主页信息图片
+     *
+     * @throws
+     * @Title: getUserIndex
+     * @Description: TODO
+     * @param: @param userId
+     * @param: @return
+     * @return: String
+     */
+    @RequestMapping(value = "/open/getUserIndexImg")
+    public String getUserIndexImg(@RequestParam String userId, @RequestParam String start, @RequestParam String count) {
+       
+        List<UserIndexImg> list = userIndexImgService.getUserIndexImgList(Long.parseLong(userId), Integer.parseInt(start), Integer.parseInt(count));
+
+        return JsonUtils.writeJson(1, "请求成功", list, "object");
+
+    }
+    
+    /**
+     * 删除图片
+     * @param userId
+     * @param img
+     * @return
+     */
+    @RequestMapping(value = "/open/deleteIndexImg", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String deleteIndexImg(@RequestParam String userId,@RequestParam String img){
+
+        UserInfo user = userInfoService.selectByPrimaryKey(Long.parseLong(userId));
+        if(null == user){
+            return JsonUtils.writeJson(0,4,"用户不存在");
+        }
+        String[] imgpath = img.split(",");
+
+        int i = userIndexImgService.delUserIndexImg(Long.parseLong(userId),imgpath);
+
+        if(0 < i){
+            return JsonUtils.writeJson("删除成功",1);
+        }else{
+            return JsonUtils.writeJson(0,41,"删除失败");
+        }
+    }
+    /**
+     * 获取用户主页信息
+     *
+     * @throws
+     * @Title: getUserIndex
+     * @Description: TODO
+     * @param: @param userId
+     * @param: @return
+     * @return: String
+     */
+    @RequestMapping(value = "/open/getUserIndex")
+    public String getUserIndex(@RequestParam String userId) {
+   
+        long user_id = Long.parseLong(userId);
+        UserInfo user = userInfoService.selectByPrimaryKey(user_id);
+        if (null == user) {
+            return JsonUtils.writeJson(0, 4, "用户不存在");
+        }
+        return JsonUtils.writeJson(1, "请求成功", user, "object");
+
     }
 }

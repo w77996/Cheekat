@@ -20,10 +20,10 @@ public class FriendServiceImpl implements FriendService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getFriendByTwoId(long parseLong,
-			long parseLong2) {
+	public List<Map<String, Object>> getFriendByTwoId(long userId,
+			long userId2) {
 		// TODO Auto-generated method stub
-		return null;
+		return friendDao.getFriendByTwoId(userId,userId2);
 	}
 
 }

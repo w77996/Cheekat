@@ -42,6 +42,14 @@
 	<dubbo:reference interface="com.xd.cheekat.service.FriendService" id="friendService"
 		url="dubbo://127.0.0.1:20880" 
 	/>
+	
+	<dubbo:reference interface="com.xd.cheekat.service.WalletService" id="walletService"
+		url="dubbo://127.0.0.1:20880" 
+	/>
+	
+	<dubbo:reference interface="com.xd.cheekat.service.UserIndexImgService" id="userIndexImgService"
+		url="dubbo://127.0.0.1:20880" 
+	/>
 	<!-- 全局设置 -->
 	<dubbo:consumer timeout="600000" check="false"/>
 </beans>

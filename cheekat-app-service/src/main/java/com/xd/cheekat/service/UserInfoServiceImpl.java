@@ -29,31 +29,31 @@ public class UserInfoServiceImpl implements UserInfoService{
 	@Override
 	public List<UserInfo> getUserByIds(String[] ids) {
 		// TODO Auto-generated method stub
-		return null;
+		return userInfoDao.getUserByIds(ids);
 	}
 
 	@Override
 	public int editUser(UserInfo user) {
 		// TODO Auto-generated method stub
-		return 0;
+		return userInfoDao.updateByPrimaryKeySelective(user);
 	}
 
 	@Override
-	public UserInfo getUserByUserName(String phone) {
+	public UserInfo getUserByUserName(String username) {
 		// TODO Auto-generated method stub
-		return null;
+		return userInfoDao.getUserByUserName(username);
 	}
 
 	@Override
 	public void addNewUser(UserInfo user) {
 		// TODO Auto-generated method stub
-		
+		userInfoDao.insertSelective(user);
 	}
 
 	@Override
 	public UserInfo getUserByOpenId(String openId) {
 		// TODO Auto-generated method stub
-		return null;
+		return userInfoDao.getUserByOpenId(openId);
 	}
 
 }

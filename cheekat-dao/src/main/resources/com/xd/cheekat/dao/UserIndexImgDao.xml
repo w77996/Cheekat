@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xd.cheekat.dao.UserIndexImgDao">
+	<resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.UserIndexImg">
+		<id column="user_img_id" property="userImgId" jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="img" property="img" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		user_img_id, user_id, img, create_time
+	</sql>
+	<delete id="delUserIndexImg" parameterType="java.util.Map">
+		delete from tb_user_index_img where user_id = #{userId} and img in
+		<foreach item="item" index="index" collection="imgpath" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	<select id="getUserIndexImgList" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select * from tb_user_index_img where user_id = #{userId} order by
+		create_time desc
+		<if test=" start != null and count != null">
+			LIMIT #{start},#{count}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from tb_user_index_img
+		where user_img_id = #{userImgId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		tb_user_index_img
+		where user_img_id = #{userImgId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.xd.cheekat.pojo.UserIndexImg">
+		insert into tb_user_index_img
+		(user_img_id, user_id, img,
+		create_time)
+		values
+		(#{userImgId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+		#{img,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xd.cheekat.pojo.UserIndexImg">
+		insert into tb_user_index_img
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userImgId != null">
+				user_img_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="img != null">
+				img,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userImgId != null">
+				#{userImgId,jdbcType=BIGINT},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="img != null">
+				#{img,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.UserIndexImg">
+		update tb_user_index_img
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="img != null">
+				img = #{img,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where user_img_id = #{userImgId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.UserIndexImg">
+		update
+		tb_user_index_img
+		set user_id = #{userId,jdbcType=BIGINT},
+		img =
+		#{img,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP}
+		where user_img_id = #{userImgId,jdbcType=BIGINT}
+	</update>
+</mapper>

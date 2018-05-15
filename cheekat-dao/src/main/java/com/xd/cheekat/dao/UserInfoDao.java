@@ -1,5 +1,7 @@
 package com.xd.cheekat.dao;
 
+import java.util.List;
+
 import com.xd.cheekat.pojo.UserInfo;
 
 public interface UserInfoDao {
@@ -14,4 +16,10 @@ public interface UserInfoDao {
     int updateByPrimaryKeySelective(UserInfo record);
 
     int updateByPrimaryKey(UserInfo record);
+
+	UserInfo getUserByUserName(String username);
+
+	UserInfo getUserByOpenId(String openId);
+
+	List<UserInfo> getUserByIds(String[] ids);
 }

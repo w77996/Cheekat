@@ -3,12 +3,7 @@ package com.xd.cheekat.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class UserInfo implements Serializable{
-	
-	
     /**
 	 * 
 	 */
@@ -31,7 +26,9 @@ public class UserInfo implements Serializable{
     private String city;
 
     private Integer invisible;
-    
+
+    private String openId;
+
     private String createTime;
 
     public Long getUserId() {
@@ -105,6 +102,15 @@ public class UserInfo implements Serializable{
     public void setInvisible(Integer invisible) {
         this.invisible = invisible;
     }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId == null ? null : openId.trim();
+    }
+
     public String getCreateTime() {
         return createTime;
     }
@@ -112,15 +118,4 @@ public class UserInfo implements Serializable{
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
-
-	@Override
-	public String toString() {
-		return "UserInfo [userId=" + userId + ", headImg=" + headImg
-				+ ", userName=" + userName + ", nickName=" + nickName
-				+ ", sex=" + sex + ", birth=" + birth + ", height=" + height
-				+ ", city=" + city + ", invisible=" + invisible
-				+ ", createTime=" + createTime + "]";
-	}
-    
-    
 }

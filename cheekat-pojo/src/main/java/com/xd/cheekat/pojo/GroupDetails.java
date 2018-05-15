@@ -63,5 +63,12 @@ public class GroupDetails implements Serializable{
 		return serialVersionUID;
 	}
 
+	@Override
+	public String toString() {
+		return "GroupDetails [detailsId=" + detailsId + ", memberId="
+				+ memberId + ", groupId=" + groupId + ", isAdmin=" + isAdmin
+				+ ", joinTime=" + joinTime + "]";
+	}
+
    
 }

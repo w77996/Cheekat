@@ -1,93 +1,136 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xd.cheekat.dao.GroupDetailsDao" >
-  <resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.GroupDetails" >
-    <id column="details_id" property="detailsId" jdbcType="BIGINT" />
-    <result column="member_id" property="memberId" jdbcType="BIGINT" />
-    <result column="group_id" property="groupId" jdbcType="BIGINT" />
-    <result column="is_admin" property="isAdmin" jdbcType="INTEGER" />
-    <result column="join_time" property="joinTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    details_id, member_id, group_id, is_admin, join_time
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_group_details
-    where details_id = #{detailsId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from tb_group_details
-    where details_id = #{detailsId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.xd.cheekat.pojo.GroupDetails" >
-    insert into tb_group_details (details_id, member_id, group_id, 
-      is_admin, join_time)
-    values (#{detailsId,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, 
-      #{isAdmin,jdbcType=INTEGER}, #{joinTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.xd.cheekat.pojo.GroupDetails" >
-    insert into tb_group_details
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="detailsId != null" >
-        details_id,
-      </if>
-      <if test="memberId != null" >
-        member_id,
-      </if>
-      <if test="groupId != null" >
-        group_id,
-      </if>
-      <if test="isAdmin != null" >
-        is_admin,
-      </if>
-      <if test="joinTime != null" >
-        join_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="detailsId != null" >
-        #{detailsId,jdbcType=BIGINT},
-      </if>
-      <if test="memberId != null" >
-        #{memberId,jdbcType=BIGINT},
-      </if>
-      <if test="groupId != null" >
-        #{groupId,jdbcType=BIGINT},
-      </if>
-      <if test="isAdmin != null" >
-        #{isAdmin,jdbcType=INTEGER},
-      </if>
-      <if test="joinTime != null" >
-        #{joinTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.GroupDetails" >
-    update tb_group_details
-    <set >
-      <if test="memberId != null" >
-        member_id = #{memberId,jdbcType=BIGINT},
-      </if>
-      <if test="groupId != null" >
-        group_id = #{groupId,jdbcType=BIGINT},
-      </if>
-      <if test="isAdmin != null" >
-        is_admin = #{isAdmin,jdbcType=INTEGER},
-      </if>
-      <if test="joinTime != null" >
-        join_time = #{joinTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where details_id = #{detailsId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.GroupDetails" >
-    update tb_group_details
-    set member_id = #{memberId,jdbcType=BIGINT},
-      group_id = #{groupId,jdbcType=BIGINT},
-      is_admin = #{isAdmin,jdbcType=INTEGER},
-      join_time = #{joinTime,jdbcType=TIMESTAMP}
-    where details_id = #{detailsId,jdbcType=BIGINT}
-  </update>
+<mapper namespace="com.xd.cheekat.dao.GroupDetailsDao">
+	<resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.GroupDetails">
+		<id column="details_id" property="detailsId" jdbcType="BIGINT" />
+		<result column="member_id" property="memberId" jdbcType="BIGINT" />
+		<result column="group_id" property="groupId" jdbcType="BIGINT" />
+		<result column="is_admin" property="isAdmin" jdbcType="INTEGER" />
+		<result column="join_time" property="joinTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		details_id, member_id, group_id, is_admin, join_time
+	</sql>
+
+	<select id="getUserGroupByImId" resultType="java.util.Map"
+		parameterType="java.lang.Long">
+		select u.* ,gd.is_admin,c.group_id from (select g.* from
+		tb_group g where
+		g.im_group_id = #{imgroupId}) c, tb_user u left OUTER
+		join
+		tb_group_details gd on gd.member_id = u.user_id where c.group_id =
+		gd.group_id
+	</select>
+	<select id="getGroupDetailsByGroupIdAndUserId" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select * from tb_group_details where group_id = #{groupId} and member_id =
+		#{memberId}
+	</select>
+	<select id="getUserGroupDetails" parameterType="java.lang.Long"
+		resultType="java.util.Map">
+		select u.*,gd.is_admin from tb_user u left JOIN tb_group_details gd on
+		gd.member_id = u.user_id where gd.group_id =#{groupId}
+
+	</select>
+	<select id="getUserGroupDetailsIsAdmin" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from tb_group_details where member_id=#{userId} and group_id=#{groupId} and is_admin=#{isAdmin}
+	</select>
+	<delete id="deleteDetailsByGroupId" parameterType="java.lang.Long">
+		delete from
+		tb_group_details where group_id = #{groupId}
+	</delete>
+	<delete id="removeGroupDetails" parameterType="java.util.Map">
+		delete from
+		tb_group_details where group_id = #{groupId} and member_id =
+		#{memberId}
+	</delete>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from tb_group_details
+		where details_id = #{detailsId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		tb_group_details
+		where details_id = #{detailsId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.xd.cheekat.pojo.GroupDetails">
+		insert into tb_group_details
+		(details_id, member_id, group_id,
+		is_admin, join_time)
+		values
+		(#{detailsId,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT},
+		#{groupId,jdbcType=BIGINT},
+		#{isAdmin,jdbcType=INTEGER},
+		#{joinTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xd.cheekat.pojo.GroupDetails">
+		insert into tb_group_details
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="detailsId != null">
+				details_id,
+			</if>
+			<if test="memberId != null">
+				member_id,
+			</if>
+			<if test="groupId != null">
+				group_id,
+			</if>
+			<if test="isAdmin != null">
+				is_admin,
+			</if>
+			<if test="joinTime != null">
+				join_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="detailsId != null">
+				#{detailsId,jdbcType=BIGINT},
+			</if>
+			<if test="memberId != null">
+				#{memberId,jdbcType=BIGINT},
+			</if>
+			<if test="groupId != null">
+				#{groupId,jdbcType=BIGINT},
+			</if>
+			<if test="isAdmin != null">
+				#{isAdmin,jdbcType=INTEGER},
+			</if>
+			<if test="joinTime != null">
+				#{joinTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.GroupDetails">
+		update tb_group_details
+		<set>
+			<if test="memberId != null">
+				member_id = #{memberId,jdbcType=BIGINT},
+			</if>
+			<if test="groupId != null">
+				group_id = #{groupId,jdbcType=BIGINT},
+			</if>
+			<if test="isAdmin != null">
+				is_admin = #{isAdmin,jdbcType=INTEGER},
+			</if>
+			<if test="joinTime != null">
+				join_time = #{joinTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where details_id = #{detailsId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.GroupDetails">
+		update
+		tb_group_details
+		set member_id = #{memberId,jdbcType=BIGINT},
+		group_id =
+		#{groupId,jdbcType=BIGINT},
+		is_admin = #{isAdmin,jdbcType=INTEGER},
+		join_time = #{joinTime,jdbcType=TIMESTAMP}
+		where details_id =
+		#{detailsId,jdbcType=BIGINT}
+	</update>
 </mapper>

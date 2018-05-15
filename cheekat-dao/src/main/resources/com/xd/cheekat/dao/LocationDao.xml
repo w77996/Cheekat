@@ -44,7 +44,7 @@
 		tb_location a, tb_user b where a.user_id = b.user_id and a.user_id <![CDATA[ <> ]]> #{userId}
 		 ORDER BY distance 
 		 <if test=" start != null and count != null" >
-		  LIMIT  #{start,jdbcType=INTERGE},#{count,jdbcType=INTERGE}
+		  LIMIT  #{start},#{count}
 		 </if>
 		
 	</select>
