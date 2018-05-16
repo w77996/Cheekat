@@ -15,17 +15,17 @@ public class Mission {
 
     private Long publishId;
 
-    private Date createTime;
+    private String createTime;
 
-    private Date startTime;
+    private String startTime;
 
     private Long acceptId;
 
     private Integer status;
 
-    private Date acceptTime;
+    private String acceptTime;
 
-    private Date finishTime;
+    private String finishTime;
 
     private Integer anonymous;
 
@@ -85,19 +85,19 @@ public class Mission {
         this.publishId = publishId;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
@@ -117,19 +117,19 @@ public class Mission {
         this.status = status;
     }
 
-    public Date getAcceptTime() {
+    public String getAcceptTime() {
         return acceptTime;
     }
 
-    public void setAcceptTime(Date acceptTime) {
+    public void setAcceptTime(String acceptTime) {
         this.acceptTime = acceptTime;
     }
 
-    public Date getFinishTime() {
+    public String getFinishTime() {
         return finishTime;
     }
 
-    public void setFinishTime(Date finishTime) {
+    public void setFinishTime(String finishTime) {
         this.finishTime = finishTime;
     }
 

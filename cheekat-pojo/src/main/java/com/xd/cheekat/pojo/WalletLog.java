@@ -21,7 +21,7 @@ public class WalletLog implements Serializable{
 
     private Double money;
 
-    private Date createTime;
+    private String createTime;
 
     public Long getLogId() {
         return logId;
@@ -71,11 +71,11 @@ public class WalletLog implements Serializable{
         this.money = money;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

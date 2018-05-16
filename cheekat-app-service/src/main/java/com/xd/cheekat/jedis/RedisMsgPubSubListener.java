@@ -38,5 +38,7 @@ public class RedisMsgPubSubListener extends JedisPubSub {
 
         System.out.println("channel:" + channel + "is been unsubscribed:" + subscribedChannels);  
 
-    }  
+    } 
+	
+	
 }

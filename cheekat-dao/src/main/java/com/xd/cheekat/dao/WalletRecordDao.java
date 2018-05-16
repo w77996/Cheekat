@@ -14,4 +14,8 @@ public interface WalletRecordDao {
     int updateByPrimaryKeySelective(WalletRecord record);
 
     int updateByPrimaryKey(WalletRecord record);
+
+	WalletRecord getWallerOrderByRecordSN(String recordSn);
+
+	void updateWalletRecordByRecordSn(WalletRecord walletRecord);
 }

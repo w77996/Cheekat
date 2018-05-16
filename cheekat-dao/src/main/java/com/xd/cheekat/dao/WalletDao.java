@@ -16,4 +16,6 @@ public interface WalletDao {
     int updateByPrimaryKey(Wallet record);
 
 	Wallet findWalletByUserId(long userId);
+
+	void updateMoneyByUserId(Wallet wallet);
 }

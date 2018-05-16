@@ -25,11 +25,11 @@ public class WalletRecord implements Serializable{
 
     private Integer payStatus;
 
-    private Date payTime;
+    private String payTime;
 
-    private Byte fetchStatus;
+    private Integer fetchStatus;
 
-    private Date fetchTime;
+    private String fetchTime;
 
     public Long getWalletRecordId() {
         return walletRecordId;
@@ -95,27 +95,27 @@ public class WalletRecord implements Serializable{
         this.payStatus = payStatus;
     }
 
-    public Date getPayTime() {
+    public String getPayTime() {
         return payTime;
     }
 
-    public void setPayTime(Date payTime) {
+    public void setPayTime(String payTime) {
         this.payTime = payTime;
     }
 
-    public Byte getFetchStatus() {
+    public Integer getFetchStatus() {
         return fetchStatus;
     }
 
-    public void setFetchStatus(Byte fetchStatus) {
+    public void setFetchStatus(int fetchStatus) {
         this.fetchStatus = fetchStatus;
     }
 
-    public Date getFetchTime() {
+    public String getFetchTime() {
         return fetchTime;
     }
 
-    public void setFetchTime(Date fetchTime) {
+    public void setFetchTime(String fetchTime) {
         this.fetchTime = fetchTime;
     }
 }

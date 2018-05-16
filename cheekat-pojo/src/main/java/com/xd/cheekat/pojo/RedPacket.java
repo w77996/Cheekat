@@ -19,13 +19,13 @@ public class RedPacket implements Serializable{
 
     private Long publishId;
 
-    private Date createTime;
+    private String createTime;
 
     private Long acceptId;
 
     private Integer status;
 
-    private Date acceptTime;
+    private String acceptTime;
 
     private Integer toType;
 
@@ -73,11 +73,11 @@ public class RedPacket implements Serializable{
         this.publishId = publishId;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -97,11 +97,11 @@ public class RedPacket implements Serializable{
         this.status = status;
     }
 
-    public Date getAcceptTime() {
+    public String getAcceptTime() {
         return acceptTime;
     }
 
-    public void setAcceptTime(Date acceptTime) {
+    public void setAcceptTime(String acceptTime) {
         this.acceptTime = acceptTime;
     }
 

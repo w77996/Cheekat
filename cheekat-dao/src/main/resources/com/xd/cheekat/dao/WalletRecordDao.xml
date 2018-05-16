@@ -18,6 +18,42 @@
     wallet_record_id, record_sn, to_uid, from_uid, type, money, pay_type, pay_status, 
     pay_time, fetch_status, fetch_time
   </sql>
+  <select id="getWallerOrderByRecordSN" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select * from tb_wallet_record where record_sn = #{recordSn}
+  </select>
+  <update id="updateWalletRecordByRecordSn" >
+   update tb_wallet_record
+    <set >
+      <if test="toUid != null" >
+        to_uid = #{toUid,jdbcType=BIGINT},
+      </if>
+      <if test="fromUid != null" >
+        from_uid = #{fromUid,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fetchStatus != null" >
+        fetch_status = #{fetchStatus,jdbcType=TINYINT},
+      </if>
+      <if test="fetchTime != null" >
+        fetch_time = #{fetchTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where record_sn = #{recordSn,jdbcType=VARCHAR}
+  </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
