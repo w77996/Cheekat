@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xd.cheekat.dao.WalletLogDao" >
+  <resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.WalletLog" >
+    <id column="log_id" property="logId" jdbcType="BIGINT" />
+    <result column="record_sn" property="recordSn" jdbcType="CHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="change_money" property="changeMoney" jdbcType="DOUBLE" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    log_id, record_sn, type, user_id, change_money, money, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_wallet_log
+    where log_id = #{logId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_wallet_log
+    where log_id = #{logId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xd.cheekat.pojo.WalletLog" >
+    insert into tb_wallet_log (log_id, record_sn, type, 
+      user_id, change_money, money, 
+      create_time)
+    values (#{logId,jdbcType=BIGINT}, #{recordSn,jdbcType=CHAR}, #{type,jdbcType=INTEGER}, 
+      #{userId,jdbcType=BIGINT}, #{changeMoney,jdbcType=DOUBLE}, #{money,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xd.cheekat.pojo.WalletLog" >
+    insert into tb_wallet_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        log_id,
+      </if>
+      <if test="recordSn != null" >
+        record_sn,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="changeMoney != null" >
+        change_money,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=BIGINT},
+      </if>
+      <if test="recordSn != null" >
+        #{recordSn,jdbcType=CHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="changeMoney != null" >
+        #{changeMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.WalletLog" >
+    update tb_wallet_log
+    <set >
+      <if test="recordSn != null" >
+        record_sn = #{recordSn,jdbcType=CHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="changeMoney != null" >
+        change_money = #{changeMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.WalletLog" >
+    update tb_wallet_log
+    set record_sn = #{recordSn,jdbcType=CHAR},
+      type = #{type,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      change_money = #{changeMoney,jdbcType=DOUBLE},
+      money = #{money,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+</mapper>

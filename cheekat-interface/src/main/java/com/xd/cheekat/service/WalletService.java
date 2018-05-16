@@ -8,4 +8,7 @@ public interface WalletService {
 
 	Wallet findWalletByUserId(long userId);
 
+	void editUserWalletPayBalance(String out_trade_no, long from_uid,
+			int type, Double money, Double fee);
+
 }

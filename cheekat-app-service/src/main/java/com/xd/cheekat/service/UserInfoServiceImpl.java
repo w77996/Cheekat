@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xd.cheekat.dao.UserInfoDao;
+import com.xd.cheekat.jedis.JedisClient;
 import com.xd.cheekat.pojo.UserInfo;
 
 @Service
@@ -13,6 +14,9 @@ public class UserInfoServiceImpl implements UserInfoService{
 
 	@Autowired
 	UserInfoDao userInfoDao;
+	
+	@Autowired
+	private JedisClient jedisClient;
 	
 	@Override
 	public UserInfo selectByPrimaryKey(Long userId) {
@@ -54,6 +58,12 @@ public class UserInfoServiceImpl implements UserInfoService{
 	public UserInfo getUserByOpenId(String openId) {
 		// TODO Auto-generated method stub
 		return userInfoDao.getUserByOpenId(openId);
+	}
+
+	@Override
+	public void test() {
+		// TODO Auto-generated method stub
+		jedisClient.subscribe("666", "575", 10);
 	}
 
 }

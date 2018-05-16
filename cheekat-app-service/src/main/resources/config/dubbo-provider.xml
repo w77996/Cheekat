@@ -50,6 +50,18 @@
 	<dubbo:service interface="com.xd.cheekat.service.WalletService" ref="walletService"/>
 	<bean id="walletService" class="com.xd.cheekat.service.WalletServiceImpl" />
 	
+	<dubbo:service interface="com.xd.cheekat.service.WalletRecordService" ref="walletRecordService"/>
+	<bean id="walletRecordService" class="com.xd.cheekat.service.WalletRecordServiceImpl" />
+	
+	<dubbo:service interface="com.xd.cheekat.service.WalletLogService" ref="walletLogService"/>
+	<bean id="walletLogService" class="com.xd.cheekat.service.WalletLogServiceImpl" />
+	
 	<dubbo:service interface="com.xd.cheekat.service.UserIndexImgService" ref="userIndexImgService"/>
 	<bean id="userIndexImgService" class="com.xd.cheekat.service.UserIndexImgServiceImpl" />
+	
+	<dubbo:service interface="com.xd.cheekat.service.MissionService" ref="missionService"/>
+	<bean id="missionService" class="com.xd.cheekat.service.MissionServiceImpl" />
+	
+	<dubbo:service interface="com.xd.cheekat.service.RedPacketService" ref="redPacketService"/>
+	<bean id="redPacketService" class="com.xd.cheekat.service.RedPacketServiceImpl" />
 </beans>

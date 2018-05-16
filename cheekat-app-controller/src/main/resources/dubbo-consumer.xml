@@ -47,7 +47,23 @@
 		url="dubbo://127.0.0.1:20880" 
 	/>
 	
+	<dubbo:reference interface="com.xd.cheekat.service.WalletRecordService" id="walletRecordService"
+		url="dubbo://127.0.0.1:20880" 
+	/>
+	
+	<dubbo:reference interface="com.xd.cheekat.service.WalletLogService" id="walletLogService"
+		url="dubbo://127.0.0.1:20880" 
+	/>
+	
 	<dubbo:reference interface="com.xd.cheekat.service.UserIndexImgService" id="userIndexImgService"
+		url="dubbo://127.0.0.1:20880" 
+	/>
+	
+	<dubbo:reference interface="com.xd.cheekat.service.MissionService" id="missionService"
+		url="dubbo://127.0.0.1:20880" 
+	/>
+	
+	<dubbo:reference interface="com.xd.cheekat.service.RedPacketService" id="redPacketService"
 		url="dubbo://127.0.0.1:20880" 
 	/>
 	<!-- 全局设置 -->

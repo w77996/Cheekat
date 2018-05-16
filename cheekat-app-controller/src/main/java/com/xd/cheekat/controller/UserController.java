@@ -375,4 +375,11 @@ public class UserController {
         return JsonUtils.writeJson(1, "请求成功", user, "object");
 
     }
+    
+    @RequestMapping(value="/test")
+    public String test(){
+    	System.out.println("test test");
+    	userInfoService.test();
+    	return "666";
+    }
 }

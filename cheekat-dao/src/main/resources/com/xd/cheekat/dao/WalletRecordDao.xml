@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xd.cheekat.dao.WalletRecordDao" >
+  <resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.WalletRecord" >
+    <id column="wallet_record_id" property="walletRecordId" jdbcType="BIGINT" />
+    <result column="record_sn" property="recordSn" jdbcType="VARCHAR" />
+    <result column="to_uid" property="toUid" jdbcType="BIGINT" />
+    <result column="from_uid" property="fromUid" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+    <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="fetch_status" property="fetchStatus" jdbcType="TINYINT" />
+    <result column="fetch_time" property="fetchTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    wallet_record_id, record_sn, to_uid, from_uid, type, money, pay_type, pay_status, 
+    pay_time, fetch_status, fetch_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_wallet_record
+    where wallet_record_id = #{walletRecordId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_wallet_record
+    where wallet_record_id = #{walletRecordId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xd.cheekat.pojo.WalletRecord" >
+    insert into tb_wallet_record (wallet_record_id, record_sn, to_uid, 
+      from_uid, type, money, 
+      pay_type, pay_status, pay_time, 
+      fetch_status, fetch_time)
+    values (#{walletRecordId,jdbcType=BIGINT}, #{recordSn,jdbcType=VARCHAR}, #{toUid,jdbcType=BIGINT}, 
+      #{fromUid,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{money,jdbcType=DOUBLE}, 
+      #{payType,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, #{payTime,jdbcType=TIMESTAMP}, 
+      #{fetchStatus,jdbcType=TINYINT}, #{fetchTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xd.cheekat.pojo.WalletRecord" >
+    insert into tb_wallet_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="walletRecordId != null" >
+        wallet_record_id,
+      </if>
+      <if test="recordSn != null" >
+        record_sn,
+      </if>
+      <if test="toUid != null" >
+        to_uid,
+      </if>
+      <if test="fromUid != null" >
+        from_uid,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="payTime != null" >
+        pay_time,
+      </if>
+      <if test="fetchStatus != null" >
+        fetch_status,
+      </if>
+      <if test="fetchTime != null" >
+        fetch_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="walletRecordId != null" >
+        #{walletRecordId,jdbcType=BIGINT},
+      </if>
+      <if test="recordSn != null" >
+        #{recordSn,jdbcType=VARCHAR},
+      </if>
+      <if test="toUid != null" >
+        #{toUid,jdbcType=BIGINT},
+      </if>
+      <if test="fromUid != null" >
+        #{fromUid,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fetchStatus != null" >
+        #{fetchStatus,jdbcType=TINYINT},
+      </if>
+      <if test="fetchTime != null" >
+        #{fetchTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.WalletRecord" >
+    update tb_wallet_record
+    <set >
+      <if test="recordSn != null" >
+        record_sn = #{recordSn,jdbcType=VARCHAR},
+      </if>
+      <if test="toUid != null" >
+        to_uid = #{toUid,jdbcType=BIGINT},
+      </if>
+      <if test="fromUid != null" >
+        from_uid = #{fromUid,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fetchStatus != null" >
+        fetch_status = #{fetchStatus,jdbcType=TINYINT},
+      </if>
+      <if test="fetchTime != null" >
+        fetch_time = #{fetchTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where wallet_record_id = #{walletRecordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.WalletRecord" >
+    update tb_wallet_record
+    set record_sn = #{recordSn,jdbcType=VARCHAR},
+      to_uid = #{toUid,jdbcType=BIGINT},
+      from_uid = #{fromUid,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      money = #{money,jdbcType=DOUBLE},
+      pay_type = #{payType,jdbcType=INTEGER},
+      pay_status = #{payStatus,jdbcType=INTEGER},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      fetch_status = #{fetchStatus,jdbcType=TINYINT},
+      fetch_time = #{fetchTime,jdbcType=TIMESTAMP}
+    where wallet_record_id = #{walletRecordId,jdbcType=BIGINT}
+  </update>
+</mapper>

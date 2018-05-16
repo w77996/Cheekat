@@ -53,5 +53,10 @@ public class GroupServiceImpl implements GroupService{
 		// TODO Auto-generated method stub
 		return groupDao.getUserGroup(userId);
 	}
+	@Override
+	public Group getGroupByImId(long imggroupId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

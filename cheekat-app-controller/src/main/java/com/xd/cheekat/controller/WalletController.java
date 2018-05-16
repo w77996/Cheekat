@@ -16,6 +16,7 @@ import com.xd.cheekat.common.Constant;
 import com.xd.cheekat.pojo.UserInfo;
 import com.xd.cheekat.pojo.Wallet;
 import com.xd.cheekat.service.UserInfoService;
+import com.xd.cheekat.service.WalletRecordService;
 import com.xd.cheekat.service.WalletService;
 import com.xd.cheekat.util.JsonUtils;
 import com.xd.cheekat.util.PayCommonUtil;
@@ -29,6 +30,9 @@ public class WalletController {
 	
 	@Autowired
 	private WalletService walletService;
+	
+	@Autowired
+	private WalletRecordService walletRecordService;
 	
 	/**
 	 * 获取余额
@@ -85,24 +89,24 @@ public class WalletController {
 			return JsonUtils.writeJson(0, 4, "用户不存在");
 		}
 
-//		if (Constant.PAY_TYPE_WECHAT == pay_type) {
-//			 if (Constant.ORDER_TYPE_TRADE == taskType) {
-//				// 微信支付充值
-//				String record_sn = walletRecordService.addWalletRecordOrder(user_id,money,Constant.PAY_TYPE_WECHAT,Constant.ORDER_TYPE_TRADE);
-//				if (null == record_sn) {
-//					return JsonUtils.writeJson(0, 19, "订单生成失败");
-//				}
-//				SortedMap<Object, Object> map = WxPayUtil.getPreperIdFromWX(
-//						record_sn, PayCommonUtil.getIpAddress(request),
-//						Constant.APP_NAME + Constant.RECHARGE, price);
-//				if (null == map) {
-//					return JsonUtils.writeJson(0, 19, "订单生成失败");
-//				}
-//				return JsonUtils.writeJson(1, "请求成功", map, "object");
-//			} else {
-//				return JsonUtils.writeJson(0, 0, "参数错误");
-//			}
-//		}
+		if (Constant.PAY_TYPE_WECHAT == pay_type) {
+			 if (Constant.ORDER_TYPE_TRADE == taskType) {
+				// 微信支付充值
+				String record_sn = walletRecordService.addWalletRecordOrder(user_id,money,Constant.PAY_TYPE_WECHAT,Constant.ORDER_TYPE_TRADE);
+				if (null == record_sn) {
+					return JsonUtils.writeJson(0, 19, "订单生成失败");
+				}
+				SortedMap<Object, Object> map = WxPayUtil.getPreperIdFromWX(
+						record_sn, PayCommonUtil.getIpAddress(request),
+						Constant.APP_NAME + Constant.RECHARGE, price);
+				if (null == map) {
+					return JsonUtils.writeJson(0, 19, "订单生成失败");
+				}
+				return JsonUtils.writeJson(1, "请求成功", map, "object");
+			} else {
+				return JsonUtils.writeJson(0, 0, "参数错误");
+			}
+		}
 		return JsonUtils.writeJson(0, 0, "参数错误");
 	}
 }

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xd.cheekat.dao.MissionDao" >
+  <resultMap id="BaseResultMap" type="com.xd.cheekat.pojo.Mission" >
+    <id column="mission_id" property="missionId" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="publish_id" property="publishId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="accept_id" property="acceptId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="accept_time" property="acceptTime" jdbcType="TIMESTAMP" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="anonymous" property="anonymous" jdbcType="INTEGER" />
+    <result column="to_id" property="toId" jdbcType="VARCHAR" />
+    <result column="record_sn" property="recordSn" jdbcType="VARCHAR" />
+    <result column="to_type" property="toType" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.xd.cheekat.pojo.Mission" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    mission_id, type, sex, address, money, publish_id, create_time, start_time, accept_id, 
+    status, accept_time, finish_time, anonymous, to_id, record_sn, to_type
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_mission
+    where mission_id = #{missionId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_mission
+    where mission_id = #{missionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xd.cheekat.pojo.Mission" >
+    insert into tb_mission (mission_id, type, sex, 
+      address, money, publish_id, 
+      create_time, start_time, accept_id, 
+      status, accept_time, finish_time, 
+      anonymous, to_id, record_sn, 
+      to_type, content)
+    values (#{missionId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, #{publishId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{acceptId,jdbcType=BIGINT}, 
+      #{status,jdbcType=INTEGER}, #{acceptTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, 
+      #{anonymous,jdbcType=INTEGER}, #{toId,jdbcType=VARCHAR}, #{recordSn,jdbcType=VARCHAR}, 
+      #{toType,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xd.cheekat.pojo.Mission" >
+    insert into tb_mission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="missionId != null" >
+        mission_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="publishId != null" >
+        publish_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="acceptId != null" >
+        accept_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="acceptTime != null" >
+        accept_time,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="anonymous != null" >
+        anonymous,
+      </if>
+      <if test="toId != null" >
+        to_id,
+      </if>
+      <if test="recordSn != null" >
+        record_sn,
+      </if>
+      <if test="toType != null" >
+        to_type,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="missionId != null" >
+        #{missionId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="publishId != null" >
+        #{publishId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acceptId != null" >
+        #{acceptId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="acceptTime != null" >
+        #{acceptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="anonymous != null" >
+        #{anonymous,jdbcType=INTEGER},
+      </if>
+      <if test="toId != null" >
+        #{toId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordSn != null" >
+        #{recordSn,jdbcType=VARCHAR},
+      </if>
+      <if test="toType != null" >
+        #{toType,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xd.cheekat.pojo.Mission" >
+    update tb_mission
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="publishId != null" >
+        publish_id = #{publishId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acceptId != null" >
+        accept_id = #{acceptId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="acceptTime != null" >
+        accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="anonymous != null" >
+        anonymous = #{anonymous,jdbcType=INTEGER},
+      </if>
+      <if test="toId != null" >
+        to_id = #{toId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordSn != null" >
+        record_sn = #{recordSn,jdbcType=VARCHAR},
+      </if>
+      <if test="toType != null" >
+        to_type = #{toType,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where mission_id = #{missionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xd.cheekat.pojo.Mission" >
+    update tb_mission
+    set type = #{type,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      publish_id = #{publishId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      accept_id = #{acceptId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      anonymous = #{anonymous,jdbcType=INTEGER},
+      to_id = #{toId,jdbcType=VARCHAR},
+      record_sn = #{recordSn,jdbcType=VARCHAR},
+      to_type = #{toType,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where mission_id = #{missionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xd.cheekat.pojo.Mission" >
+    update tb_mission
+    set type = #{type,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      publish_id = #{publishId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      accept_id = #{acceptId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      anonymous = #{anonymous,jdbcType=INTEGER},
+      to_id = #{toId,jdbcType=VARCHAR},
+      record_sn = #{recordSn,jdbcType=VARCHAR},
+      to_type = #{toType,jdbcType=INTEGER}
+    where mission_id = #{missionId,jdbcType=BIGINT}
+  </update>
+</mapper>

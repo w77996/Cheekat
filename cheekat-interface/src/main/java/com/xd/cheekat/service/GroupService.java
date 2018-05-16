@@ -19,4 +19,6 @@ public interface GroupService {
 
 	List<Map<String, Object>> getUserGroup(long user_id);
 
+	Group getGroupByImId(long imggroupId);
+
 }

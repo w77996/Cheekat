@@ -19,4 +19,6 @@ public interface UserInfoService {
 	void addNewUser(UserInfo user);
 
 	UserInfo getUserByOpenId(String openId);
+
+	void test();
 }
