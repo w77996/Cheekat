@@ -1,6 +1,8 @@
 package com.xd.cheekat.util;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.xd.cheekat.common.Constant;
@@ -261,5 +263,41 @@ public class DateUtil {
 		
 		return checkTime;
 	}
+	/**
+	 * 求秒
+	 * @Title:           getSeconds
+	 * @Description:     TODO
+	 * @param:           @param begainDate
+	 * @param:           @param endDate
+	 * @param:           @return   
+	 * @return:          long   
+	 * @throws
+	 */
+	public static int getSeconds(String begainDate,String endDate){
+		 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   
+		 try{   
+		     Date d1 = df.parse(endDate);   
+		     Date d2 = df.parse(begainDate);   
+		     
+		     long diff = d1.getTime() - d2.getTime();   
+		     System.out.println(diff+"");
+		     long days = diff / (1000);  
+		     System.out.println(days+"");
+		     return Integer.parseInt(days+"");
+		 }catch (Exception e){  
+			 
+		 }  
+		 return 0;
+	}
+	
+	public static String getNextDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, +1);//+1今天的时间加一天
+        date = calendar.getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+        String reuslt = df.format(date);
+        return reuslt;
+    }
 
 }

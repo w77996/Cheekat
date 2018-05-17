@@ -1,6 +1,7 @@
 package com.xd.cheekat.common;
 
 public class Constant {
+	
 	/**
 	 * 该类不能被实例化
 	 */
@@ -168,6 +169,7 @@ public class Constant {
      
      public static final int FETCH_WAIT = 0;//未领取
      public static final int FETCH_SUCCESS = 1;//领取成功
+     public static final int REDPACKET_INVALID =2;//红包失效
      
      public static final int PAY_TYPE_BALANCE = 1;//余额支付
      public static final int PAY_TYPE_WECHAT = 0;//微信支付
@@ -176,5 +178,10 @@ public class Constant {
      public static final String REDPACKET = "红包";
      public static final String TASK = "任务";
      public static final String RECHARGE = "充值";
-
+     
+     public static final int MISSION_TYPE_WATI_FETCH = 0;//任务待领取
+     public static final int MISSION_TYPE_ING = 1;//任务进行中
+     public static final int MISSION_TYPE_ACCPET_SURE = 2;//接受者确认
+     public static final int MISSION_TYPE_FINISH = 3;//完成任务
+     public static final int MISSION_TYPE_INVALID = 4;//任务失效
 }

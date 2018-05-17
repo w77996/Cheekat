@@ -15,8 +15,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 	@Autowired
 	UserInfoDao userInfoDao;
 	
-	@Autowired
-	private JedisClient jedisClient;
+
 	
 	@Override
 	public UserInfo selectByPrimaryKey(Long userId) {
@@ -63,7 +62,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 	@Override
 	public void test() {
 		// TODO Auto-generated method stub
-		jedisClient.subscribe("666", "575", 10);
+	
 	}
 
 }

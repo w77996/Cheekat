@@ -13,8 +13,10 @@
   <sql id="Base_Column_List" >
     log_id, record_sn, type, user_id, change_money, money, create_time
   </sql>
+  <select id="getWalletLogByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  	select * from tb_wallet_log where user_id = #{userId}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
     <include refid="Base_Column_List" />
     from tb_wallet_log
     where log_id = #{logId,jdbcType=BIGINT}

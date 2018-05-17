@@ -14,4 +14,7 @@ public interface WalletService {
 	boolean editUserWalletFetchBalance(String recordSn, Long userId,
 			int logType, Double money, Double total_fee);
 
+	boolean refund(String recordSn, long userId, int logType,
+			Double changeMoney, Double money);
+
 }

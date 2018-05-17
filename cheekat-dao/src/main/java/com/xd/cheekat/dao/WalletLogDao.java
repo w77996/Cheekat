@@ -1,5 +1,7 @@
 package com.xd.cheekat.dao;
 
+import java.util.List;
+
 import com.xd.cheekat.pojo.WalletLog;
 
 public interface WalletLogDao {
@@ -14,4 +16,6 @@ public interface WalletLogDao {
     int updateByPrimaryKeySelective(WalletLog record);
 
     int updateByPrimaryKey(WalletLog record);
+
+	List<WalletLog> getWalletLogByUserId(long userId);
 }

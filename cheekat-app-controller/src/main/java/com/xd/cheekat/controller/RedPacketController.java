@@ -64,10 +64,6 @@ public class RedPacketController {
 	    @RequestMapping(value = "/open/getRedPacket", produces = "text/html;charset=UTF-8")
 	    public String userGetRedPacket(@RequestParam String userId,
 	                               @RequestParam String redpacketId) {
-	        String returnStr = JsonUtils.writeJson(0, 0, "参数为空");
-	        if (StringUtils.isBlank(userId) || StringUtils.isBlank(redpacketId)) {
-	            return returnStr;
-	        }
 	        // 查询领取的用户信息
 	        UserInfo user = userService.selectByPrimaryKey(Long.parseLong(userId));
 	        if (null == user) {
@@ -83,6 +79,9 @@ public class RedPacketController {
 	        if (walletRecord.getMoney().compareTo(redPacket.getMoney()) != 0) {
 	            return JsonUtils.writeJson(0, 18, "红包领取失败");
 	        }
+	        if(Constant.REDPACKET_INVALID == redPacket.getStatus()){
+	        	return JsonUtils.writeJson(0, 18, "红包失效");
+	        }
 	        if (redPacket.getStatus() == Constant.FETCH_SUCCESS) {
 	            if (redPacket.getPublishId() == user.getUserId()) {
 	                //查询被领取人的信息
@@ -97,24 +96,28 @@ public class RedPacketController {
 	        if (redPacket.getPublishId() == user.getUserId()) {
 	            return JsonUtils.writeJson(0, 36, "不能领取自己的红包");
 	        }
-	        //更新红包状态
-	        boolean isRedPacket = redPacketService.editRedPacketFetchStatus(redPacket.getRecordSn(), user.getUserId(), Constant.FETCH_SUCCESS);
-	        if (false == isRedPacket) {
-	            return JsonUtils.writeJson(0, 18, "红包领取失败");
+	        if(redPacket.getStatus() == Constant.FETCH_WAIT){
+	        	 //更新红包状态
+		        boolean isRedPacket = redPacketService.editRedPacketFetchStatus(redPacket.getRecordSn(), user.getUserId(), Constant.FETCH_SUCCESS);
+		        if (false == isRedPacket) {
+		            return JsonUtils.writeJson(0, 18, "红包领取失败");
+		        }
+		        //更新状态
+		        Wallet wallet = walletService.findWalletByUserId(user.getUserId());
+		        Double total_fee = wallet.getMoney() + redPacket.getMoney();
+		        boolean isWalletSuccess = walletService.editUserWalletFetchBalance(redPacket.getRecordSn(), user.getUserId(), Constant.LOG_FETCH_REDPACKET, redPacket.getMoney(), total_fee);
+		        if (false == isWalletSuccess) {
+		            return JsonUtils.writeJson(0, 18, "红包领取失败");
+		        }
+		        RedPacket redPacket2 = redPacketService.getRedPacketById(Long.parseLong(redpacketId));
+		        if (null != redPacket2) {
+		            return JsonUtils.writeJson(1, "领取成功", redPacket2, "object");
+		        } else {
+		            return JsonUtils.writeJson(0, 18, "红包领取失败");
+		        }
 	        }
-	        //更新状态
-	        Wallet wallet = walletService.findWalletByUserId(user.getUserId());
-	        Double total_fee = wallet.getMoney() + redPacket.getMoney();
-	        boolean isWalletSuccess = walletService.editUserWalletFetchBalance(redPacket.getRecordSn(), user.getUserId(), Constant.LOG_FETCH_REDPACKET, redPacket.getMoney(), total_fee);
-	        if (false == isWalletSuccess) {
-	            return JsonUtils.writeJson(0, 18, "红包领取失败");
-	        }
-	        RedPacket redPacket2 = redPacketService.getRedPacketById(Long.parseLong(redpacketId));
-	        if (null != redPacket2) {
-	            return JsonUtils.writeJson(1, "领取成功", redPacket2, "object");
-	        } else {
-	            return JsonUtils.writeJson(0, 18, "红包领取失败");
-	        }
+	        return  JsonUtils.writeJson(0, 0, "参数错误");
+	       
 	    }
 
 	    /**
@@ -135,10 +138,7 @@ public class RedPacketController {
 	    public String payRedPacket(@RequestParam String payType, @RequestParam String money,
 	                               @RequestParam String type, @RequestParam String to, @RequestParam String to_id,@RequestParam String userName, HttpServletRequest request) {
 	        System.out.println("进入");
-	        if ( StringUtils.isBlank(payType)
-	                || StringUtils.isBlank(money) || StringUtils.isBlank(type) || StringUtils.isBlank(to) || StringUtils.isBlank(to_id)||StringUtils.isBlank(userName)) {
-	            return JsonUtils.writeJson(0, 0, "参数错误");
-	        }
+	      
 	        String result = JsonUtils.writeJson(0, 0, "参数错误");
 	        int pay_type = Integer.parseInt(payType);
 	        int taskType = Integer.parseInt(type);

@@ -22,4 +22,6 @@ public interface RedPacketService {
 
 	RedPacket getRedPacketById(long redpacketId);
 
+	void editRedPacket(RedPacket redPacket);
+
 }

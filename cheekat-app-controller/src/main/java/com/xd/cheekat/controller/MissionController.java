@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,8 +58,11 @@ public class MissionController {
 	@Autowired
 	private GroupService groupService;
 	
+	/*@Autowired
+	private JedisClient jedisClient;*/
+	
 	/**
-	 * 查询附近的人
+	 * 查询所有的任务
 	 * 
 	 * @param request
 	 * @return
@@ -125,6 +129,8 @@ public class MissionController {
 			    			mission.setAcceptTime(DateUtil.getNowTime());
 			 			    missionService.editMission(mission);
 			 			    Mission resultMission = missionService.getMissionById(Long.parseLong(missionId));
+			 			    //删除redis中的key
+			 			    
 			 			    returnStr = JsonUtils.writeJson(1, "领取成功", resultMission, "object");
 		    			}else {
 		    				returnStr = JsonUtils.writeJson(0, 9, "该任务已被领取");
@@ -201,8 +207,8 @@ public class MissionController {
 		    	Mission mission = missionService.getMissionById(Long.parseLong(missionId));
 		    	if(mission != null) {
 		    		if(mission.getPublishId() == Long.parseLong(userId)) {
-                        if(mission.getStatus() == 0) {
-		    				mission.setStatus(4);
+                        if(mission.getStatus() == Constant.MISSION_TYPE_WATI_FETCH) {
+		    				mission.setStatus(Constant.MISSION_TYPE_INVALID);
 		    			}else {
 		    				returnStr = JsonUtils.writeJson(0, 12, "无法关闭");
 		    			}                        
@@ -214,7 +220,7 @@ public class MissionController {
 						//修改金额,更新订单支付状态，插入余额记录
 						Double total_fee = wallet.getMoney()+mission.getMoney();
 						String changemoney = ""+mission.getMoney();
-//						boolean isWalletSuccess = walletService.refund(mission.getRecordSn(),Long.parseLong(userId),Constant.LOG_REFUND_TASK,Double.parseDouble(changemoney),total_fee);
+						boolean isWalletSuccess = walletService.refund(mission.getRecordSn(),Long.parseLong(userId),Constant.LOG_REFUND_TASK,Double.parseDouble(changemoney),total_fee);
 //						if(false == isWalletSuccess){
 //							return JsonUtils.writeJson(0, 22, "余额更新失败");
 //						}
@@ -280,6 +286,7 @@ public class MissionController {
 			    	mission.setAnonymous(Integer.parseInt(anonymous));
 			    	System.out.println(mission.toString());
 			    	missionService.addMission(mission);
+			    	//jedisClient.set(record_sn, "mission");
 			}else if(Constant.PAY_TYPE_BALANCE == Integer.parseInt(pay_type)){
 					Wallet wallet = walletService.findWalletByUserId(Long.parseLong(userId));
 					if(null == wallet){

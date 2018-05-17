@@ -263,8 +263,9 @@ public class WxPayController {
 							+ "<return_msg><![CDATA[参数错误]]></return_msg>"
 							+ "</xml> ";
 
-					walletRecordService.editWalletOrderPayStatus(out_trade_no,Constant.PAY_STATUS_FAIL);
-					redPacketService.editRedPacketPayStatus(out_trade_no,Constant.PAY_STATUS_FAIL);
+					//walletRecordService.editWalletOrderPayStatus(out_trade_no,Constant.PAY_STATUS_FAIL);
+					//redPacketService.editRedPacketPayStatus(out_trade_no,Constant.PAY_STATUS_FAIL);
+					//missionService.ed
 				} else {
 					if (Constant.PAY_STATUS_WAIT == pay_status) {// 支付的价格
 						// 订单状态的修改。根据实际业务逻辑执行
@@ -349,7 +350,7 @@ public class WxPayController {
 							    		ImUtils.sendTextMessage("chatgroups", new String[]{group.getImGroupId()}, "WtwdMissionTxt:好友"+user.getNickName()+"发布了一个任务，点击查看:"+mission.getMissionId(),user.getUserName());
 							    	}		    	
 							    }
-								mission.setStatus(0);
+								mission.setStatus(Constant.MISSION_TYPE_WATI_FETCH);
 								missionService.editMission(mission);
 							}
 						

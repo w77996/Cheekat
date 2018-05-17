@@ -1,12 +1,15 @@
 package com.xd.cheekat.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xd.cheekat.common.Constant;
 import com.xd.cheekat.dao.RedPacketDao;
+import com.xd.cheekat.jedis.JedisClient;
 import com.xd.cheekat.pojo.RedPacket;
 import com.xd.cheekat.util.DateUtil;
 @Service
@@ -15,6 +18,9 @@ public class RedPacketServiceImpl implements RedPacketService{
 	@Autowired
 	private RedPacketDao redPacketDao;
 	
+	@Autowired
+	private JedisClient jedisClient;
+	
 	@Override
 	public void editRedPacketPayStatus(String out_trade_no, int pay_status) {
 		// TODO Auto-generated method stub
@@ -22,6 +28,10 @@ public class RedPacketServiceImpl implements RedPacketService{
 		redPacket.setPayStatus(pay_status);
 		redPacket.setRecordSn(out_trade_no);
 		redPacketDao.updateRedPacketByRecordSn(redPacket);
+		if(Constant.PAY_STATUS_SUCCESS == pay_status){
+			jedisClient.set(out_trade_no, "redpacket");
+			jedisClient.expire(out_trade_no, DateUtil.getSeconds(DateUtil.getNowTime(), DateUtil.getNextDay(new Date())));
+		}
 	}
 
 	@Override
@@ -39,6 +49,9 @@ public class RedPacketServiceImpl implements RedPacketService{
 		redPacket.setAcceptId(userId);
 		redPacket.setAcceptTime(DateUtil.getNowTime());
 		redPacket.setStatus(fetchStatus);
+		if(Constant.FETCH_SUCCESS == fetchStatus){
+			jedisClient.del(recordSn);
+		}
 		return redPacketDao.updateRedPacketByRecordSn(redPacket);
 	}
 /*
@@ -67,6 +80,12 @@ public class RedPacketServiceImpl implements RedPacketService{
 	public RedPacket getRedPacketById(long redpacketId) {
 		// TODO Auto-generated method stub
 		return redPacketDao.selectByPrimaryKey(redpacketId);
+	}
+
+	@Override
+	public void editRedPacket(RedPacket redPacket) {
+		// TODO Auto-generated method stub
+		redPacketDao.updateByPrimaryKeySelective(redPacket);
 	}
 
 }

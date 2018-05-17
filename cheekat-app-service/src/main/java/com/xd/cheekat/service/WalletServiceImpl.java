@@ -101,4 +101,37 @@ public class WalletServiceImpl implements WalletService {
 		return true;
 	}
 
+	@Transactional
+	@Override
+	public boolean refund(String recordSn, long userId, int logType,
+			Double changeMoney, Double money) {
+		String date = DateUtil.getNowTime();
+        //更新支付的状态
+       // where.and("record_sn", C.EQ, record_sn);
+        WalletRecord walletRecord = new WalletRecord();
+        //walletRecord.setType(Constant.ORDER_TYPE_BACK);
+        walletRecord.setPayStatus(Constant.PAY_STATUS_BACK);
+        walletRecord.setRecordSn(recordSn);
+        walletRecord.setFromUid(userId);
+        walletRecord.setFetchTime(date);
+        walletRecord.setFetchStatus(Constant.FETCH_SUCCESS);
+        walletRecordDao.insertSelective(walletRecord);
+        //更新日志
+        WalletLog walletLog = new WalletLog();
+        walletLog.setRecordSn(recordSn);
+        walletLog.setUserId(userId);
+        walletLog.setType(logType);
+        walletLog.setChangeMoney(changeMoney);
+        walletLog.setMoney(money);
+        walletLog.setCreateTime(date);
+        walletLogDao.insertSelective(walletLog);
+
+
+        Wallet wallet = new Wallet();
+		wallet.setMoney(money);
+		wallet.setUserId(userId);
+		walletDao.updateMoneyByUserId(wallet);
+		return true;
+	}
+
 }

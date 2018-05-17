@@ -42,5 +42,4 @@
 	</bean>
 
 	<import resource="dubbo-consumer.xml" />
-
 </beans>
