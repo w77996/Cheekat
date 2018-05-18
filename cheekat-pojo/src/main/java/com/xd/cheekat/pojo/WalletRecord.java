@@ -118,4 +118,16 @@ public class WalletRecord implements Serializable{
     public void setFetchTime(String fetchTime) {
         this.fetchTime = fetchTime;
     }
+
+	@Override
+	public String toString() {
+		return "WalletRecord [walletRecordId=" + walletRecordId + ", recordSn="
+				+ recordSn + ", toUid=" + toUid + ", fromUid=" + fromUid
+				+ ", type=" + type + ", money=" + money + ", payType="
+				+ payType + ", payStatus=" + payStatus + ", payTime=" + payTime
+				+ ", fetchStatus=" + fetchStatus + ", fetchTime=" + fetchTime
+				+ "]";
+	}
+    
+    
 }

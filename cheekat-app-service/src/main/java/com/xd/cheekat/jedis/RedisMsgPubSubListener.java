@@ -1,8 +1,13 @@
 package com.xd.cheekat.jedis;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.xd.cheekat.common.Constant;
+import com.xd.cheekat.dao.WalletDao;
+import com.xd.cheekat.dao.WalletRecordDao;
 import com.xd.cheekat.pojo.Mission;
 import com.xd.cheekat.pojo.RedPacket;
 import com.xd.cheekat.pojo.Wallet;
@@ -16,6 +21,7 @@ import com.xd.cheekat.service.WalletService;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
 
+@Component
 public class RedisMsgPubSubListener extends JedisPubSub {
 	
 	@Autowired
@@ -36,6 +42,13 @@ public class RedisMsgPubSubListener extends JedisPubSub {
 	@Autowired
 	private WalletLogService walletLogService;
 	
+	
+	@Autowired
+	private WalletRecordDao walletRecordDao;
+	
+	
+	
+	
 	@Override
 	public void onPSubscribe(String pattern, int subscribedChannels) {
 		System.out
@@ -47,22 +60,23 @@ public class RedisMsgPubSubListener extends JedisPubSub {
 
 		System.out.println("onPMessage pattern " + pattern + " " + channel
 				+ " " + message);
-	}
-
-	@Override
-	public void onSubscribe(String channel, int subscribedChannels) {
-		System.out.println("channel:" + channel + "is been subscribed:"
-				+ subscribedChannels);
-	}
-
-	@Override
-	public void onMessage(String channel, String message) {
-
-		System.out.println("channel11111111:" + channel + "receives message :"
-				+ message);
-
+		//Refund refund = new Refund();
+			//refund.missionRefund(message);
+		/*WalletRecord walletRecord2 = walletRecordDao.getWallerOrderByRecordSN(message);
+		System.out.println(walletRecord2.toString());*/
+		WalletRecord walletRecord = Refund.getWallerOrderByRecordSN(message);
+		if(Constant.ORDER_TYPE_TASK == walletRecord.getType()){
+			Refund.refundMission(message);
+		}else if(Constant.ORDER_TYPE_REDPACKET == walletRecord.getType()){
+			Refund.refundRedPacket(message);
+		}
+		/*if(null == walletRecordService){
+			System.out.println("null");
+		}else{
+			System.out.println("not null");
+		}*/
 		// 对该key进行业务处理。。。。。
-		WalletRecord walletRecord = walletRecordService.getWallerOrderByRecordSN(message);
+		/*WalletRecord walletRecord = walletRecordService.getWallerOrderByRecordSN(message);
 		
 		int recordType = walletRecord.getType();
 		if(Constant.ORDER_TYPE_TASK == walletRecord.getType()){
@@ -87,7 +101,21 @@ public class RedisMsgPubSubListener extends JedisPubSub {
 			String changemoney = ""+redPacket.getMoney();
 			walletService.refund(redPacket.getRecordSn(),redPacket.getPublishId(),Constant.LOG_REFUND_TASK,Double.parseDouble(changemoney),total_fee);
 			
-		}
+		}*/
+	}
+
+	@Override
+	public void onSubscribe(String channel, int subscribedChannels) {
+		System.out.println("channel:" + channel + "is been subscribed:"
+				+ subscribedChannels);
+	}
+
+	@Override
+	public void onMessage(String channel, String message) {
+
+		System.out.println("channel11111111:" + channel + "receives message :"
+				+ message);
+
 
 	}
 	

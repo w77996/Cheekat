@@ -30,6 +30,7 @@ public class RedPacketServiceImpl implements RedPacketService{
 		redPacketDao.updateRedPacketByRecordSn(redPacket);
 		if(Constant.PAY_STATUS_SUCCESS == pay_status){
 			jedisClient.set(out_trade_no, "redpacket");
+			System.out.println(DateUtil.getSeconds(DateUtil.getNowTime(), DateUtil.getNextDay(new Date())));
 			jedisClient.expire(out_trade_no, DateUtil.getSeconds(DateUtil.getNowTime(), DateUtil.getNextDay(new Date())));
 		}
 	}

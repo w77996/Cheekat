@@ -118,4 +118,15 @@ public class UserInfo implements Serializable{
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
+
+	@Override
+	public String toString() {
+		return "UserInfo [userId=" + userId + ", headImg=" + headImg
+				+ ", userName=" + userName + ", nickName=" + nickName
+				+ ", sex=" + sex + ", birth=" + birth + ", height=" + height
+				+ ", city=" + city + ", invisible=" + invisible + ", openId="
+				+ openId + ", createTime=" + createTime + "]";
+	}
+    
+    
 }

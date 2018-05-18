@@ -239,7 +239,7 @@ public class MissionController {
 	}
 
 	
-	@RequestMapping(value = "/open/publishMission", produces="text/html;charset=UTF-8")
+	@RequestMapping(value = "/open/publishMission", produces="application/json;charset=UTF-8")
 	public String publishMission(HttpServletRequest request) {
 		String userId =  request.getParameter("userId");
 		String content = request.getParameter("content");
@@ -304,7 +304,7 @@ public class MissionController {
 					//修改金额,更新订单支付状态，插入余额记录
 					Double total_fee = wallet.getMoney()-Double.parseDouble(money);
 					String changemoney = "-"+money;
-					boolean isWalletSuccess = walletService.editUserWalletPayBalance(record_sn,Long.parseLong(userId),Constant.LOG_AWARD_REDPACKET,Double.parseDouble(changemoney),total_fee);
+					boolean isWalletSuccess = walletService.editUserWalletPayBalance(record_sn,Long.parseLong(userId),Constant.LOG_AWARD_TASK,Double.parseDouble(changemoney),total_fee);
 					if(false == isWalletSuccess){
 						return JsonUtils.writeJson(0, 22, "订单生成失败");
 					}
@@ -322,6 +322,7 @@ public class MissionController {
 			    	mission.setToId(toId);
 			    	mission.setRecordSn(record_sn);
 			    	mission.setAnonymous(Integer.parseInt(anonymous));
+			    	System.out.println(mission.toString());
 			    	missionService.addMission(mission);
 			    	Mission mission2 = missionService.getMissionByPubIdAndCreateTime(user.getUserId(),mission.getCreateTime(),mission.getContent(),mission.getStartTime());
 			    	if(Integer.parseInt(to) == 0){//如果发给所有人

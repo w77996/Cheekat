@@ -57,7 +57,7 @@
 				pay_status = #{payStatus,jdbcType=INTEGER},
 			</if>
 		</set>
-		where record_sn = #{recordSn,jdbcType=VARCHAR},
+		where record_sn = #{recordSn,jdbcType=VARCHAR}
 	</update>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Long">

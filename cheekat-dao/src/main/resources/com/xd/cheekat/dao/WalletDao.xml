@@ -9,6 +9,18 @@
   <sql id="Base_Column_List" >
     wallet_id, user_id, money
   </sql>
+  <select id="findWalletByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  	select * from tb_wallet where user_id=#{userId}
+  </select>
+  <update id="updateMoneyByUserId" parameterType="com.xd.cheekat.pojo.Wallet">
+  	update tb_wallet
+    <set >
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

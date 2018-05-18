@@ -1,7 +1,14 @@
 package com.xd.cheekat.pojo;
 
-public class Wallet {
-    private Long walletId;
+import java.io.Serializable;
+
+public class Wallet implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long walletId;
 
     private Long userId;
 
@@ -30,4 +37,12 @@ public class Wallet {
     public void setMoney(Double money) {
         this.money = money;
     }
+
+	@Override
+	public String toString() {
+		return "Wallet [walletId=" + walletId + ", userId=" + userId
+				+ ", money=" + money + "]";
+	}
+    
+    
 }

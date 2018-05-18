@@ -128,4 +128,16 @@ public class RedPacket implements Serializable{
     public void setPayStatus(Integer payStatus) {
         this.payStatus = payStatus;
     }
+
+	@Override
+	public String toString() {
+		return "RedPacket [redpacketId=" + redpacketId + ", recordSn="
+				+ recordSn + ", type=" + type + ", money=" + money
+				+ ", publishId=" + publishId + ", createTime=" + createTime
+				+ ", acceptId=" + acceptId + ", status=" + status
+				+ ", acceptTime=" + acceptTime + ", toType=" + toType
+				+ ", toId=" + toId + ", payStatus=" + payStatus + "]";
+	}
+    
+    
 }

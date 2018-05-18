@@ -60,6 +60,7 @@ public class MissionServiceImpl implements MissionService{
 		
 		missionDao.insertSelective(mission);
 		jedisClient.set(mission.getRecordSn(), "mission");
+		System.out.println("mission_time"+DateUtil.getSeconds(DateUtil.getNowTime(), mission.getStartTime()));
 		jedisClient.expire(mission.getRecordSn(),DateUtil.getSeconds(DateUtil.getNowTime(), mission.getStartTime()));
 	}
 

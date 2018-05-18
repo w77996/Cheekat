@@ -280,12 +280,12 @@ public class DateUtil {
 		     Date d2 = df.parse(begainDate);   
 		     
 		     long diff = d1.getTime() - d2.getTime();   
-		     System.out.println(diff+"");
+		     System.out.println(diff+"diff");
 		     long days = diff / (1000);  
-		     System.out.println(days+"");
+		     System.out.println(days+"days");
 		     return Integer.parseInt(days+"");
 		 }catch (Exception e){  
-			 
+			 e.printStackTrace();
 		 }  
 		 return 0;
 	}

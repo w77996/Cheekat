@@ -82,8 +82,10 @@ public class RedPacketController {
 	        if(Constant.REDPACKET_INVALID == redPacket.getStatus()){
 	        	return JsonUtils.writeJson(0, 18, "红包失效");
 	        }
+	        System.out.println("user :"+user.getUserId());
+	        System.out.println("redPacket :"+redPacket.toString());
 	        if (redPacket.getStatus() == Constant.FETCH_SUCCESS) {
-	            if (redPacket.getPublishId() == user.getUserId()) {
+	            if (redPacket.getPublishId().equals(user.getUserId())) {
 	                //查询被领取人的信息
 	                UserInfo acceptUser = userService.selectByPrimaryKey(redPacket.getAcceptId());
 	                Map<String, Object> map = new HashMap<>();
@@ -93,7 +95,9 @@ public class RedPacketController {
 	            }
 	            return JsonUtils.writeJson(0, 17, "红包被领取");
 	        }
-	        if (redPacket.getPublishId() == user.getUserId()) {
+	        if (redPacket.getPublishId().equals( user.getUserId())) {
+	        	 System.out.println("user :"+user.toString());
+	 	        System.out.println("redPacket :"+redPacket.toString());
 	            return JsonUtils.writeJson(0, 36, "不能领取自己的红包");
 	        }
 	        if(redPacket.getStatus() == Constant.FETCH_WAIT){
@@ -104,6 +108,7 @@ public class RedPacketController {
 		        }
 		        //更新状态
 		        Wallet wallet = walletService.findWalletByUserId(user.getUserId());
+		        System.out.println(wallet.toString());
 		        Double total_fee = wallet.getMoney() + redPacket.getMoney();
 		        boolean isWalletSuccess = walletService.editUserWalletFetchBalance(redPacket.getRecordSn(), user.getUserId(), Constant.LOG_FETCH_REDPACKET, redPacket.getMoney(), total_fee);
 		        if (false == isWalletSuccess) {
