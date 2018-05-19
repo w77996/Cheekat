@@ -12,6 +12,7 @@ import com.xd.cheekat.pojo.Wallet;
 import com.xd.cheekat.pojo.WalletLog;
 import com.xd.cheekat.pojo.WalletRecord;
 import com.xd.cheekat.util.DateUtil;
+import com.xd.cheekat.util.PayCommonUtil;
 
 @Service
 public class WalletServiceImpl implements WalletService {
@@ -108,14 +109,23 @@ public class WalletServiceImpl implements WalletService {
 		String date = DateUtil.getNowTime();
         //更新支付的状态
        // where.and("record_sn", C.EQ, record_sn);
+		String newRecordSn = PayCommonUtil.createOutTradeNo();
         WalletRecord walletRecord = new WalletRecord();
         //walletRecord.setType(Constant.ORDER_TYPE_BACK);
         walletRecord.setPayStatus(Constant.PAY_STATUS_BACK);
-        walletRecord.setRecordSn(recordSn);
-        walletRecord.setFromUid(userId);
+        walletRecord.setRecordSn(newRecordSn);
+        walletRecord.setFromUid(0L);
+        walletRecord.setToUid(userId);
         walletRecord.setFetchTime(date);
         walletRecord.setFetchStatus(Constant.FETCH_SUCCESS);
         walletRecordDao.insertSelective(walletRecord);
+        //更新订单支付状态
+        WalletRecord userWalletRecord = new WalletRecord();
+        walletRecord.setPayStatus(Constant.PAY_STATUS_BACK);
+        walletRecord.setFetchTime(date);
+        walletRecord.setFetchStatus(Constant.FETCH_SUCCESS);
+        walletRecord.setRecordSn(recordSn);
+        walletRecordDao.updateWalletRecordByRecordSn(userWalletRecord);
         //更新日志
         WalletLog walletLog = new WalletLog();
         walletLog.setRecordSn(recordSn);

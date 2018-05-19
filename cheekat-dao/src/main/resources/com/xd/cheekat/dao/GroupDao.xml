@@ -23,6 +23,9 @@
 		tb_group_details gd where gd.member_id =#{userId}) c where g.group_id
 		= c.group_id
 	</select>
+	<select id="getGroupSecondsMember" parameterType="java.util.Map" resultType="java.util.Map">
+		select * from tb_user ,(SELECT member_id FROM tb_group_details  WHERE group_id =#{groupId} ORDER BY member_id ASC LIMIT 1, 1) b where user_id = b.member_id and user_id = #{userId}
+	</select>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Long">
 		select

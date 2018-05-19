@@ -35,4 +35,6 @@ public interface GroupDetailsDao {
 	void removeGroupDetails(long groupId,long userId);
 
 	void deleteDetailsByGroupId(long groupId);
+	
+	int tranSecondUserToAdmin(@Param("userId")long userId,@Param("groupId")long groupId);
 }

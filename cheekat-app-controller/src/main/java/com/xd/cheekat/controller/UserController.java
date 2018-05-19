@@ -186,9 +186,9 @@ public class UserController {
         int login_type = Integer.parseInt(type);
         boolean addImSuccess = false;
         if (Constant.LOGIN_TYPE_PHONE == login_type) {
-            addImSuccess = ImUtils.authRegister(phone, "123456", phone);
+            addImSuccess = ImUtils.authRegister(phone, "123456", userName);
         } else if (Constant.LOGIN_TYPE_WECHAT == login_type) {
-            addImSuccess = ImUtils.authRegister(openId, "123456", openId);
+            addImSuccess = ImUtils.authRegister(openId, "123456", userName);
         } else {
             return JsonUtils.writeJson(0, 0, "参数为空");
         }

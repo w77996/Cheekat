@@ -30,11 +30,16 @@
 		resultType="java.util.Map">
 		select u.*,gd.is_admin from tb_user u left JOIN tb_group_details gd on
 		gd.member_id = u.user_id where gd.group_id =#{groupId}
-
 	</select>
 	<select id="getUserGroupDetailsIsAdmin" parameterType="java.util.Map" resultMap="BaseResultMap">
 		select * from tb_group_details where member_id=#{userId} and group_id=#{groupId} and is_admin=#{isAdmin}
 	</select>
+	<update id="tranSecondUserToAdmin" paramerType="java.util.Map" >
+		UPDATE tb_group_details SET is_admin = 1 WHERE member_id =#{userId} and group_id =#{groupId}
+	</update>
+	<delete id="deleteUserFromGroup" parameterType="java.util.Map">
+	delete from tb_group_details where group_id = #{groupId} and member_id=#{userId}
+	</delete> 
 	<delete id="deleteDetailsByGroupId" parameterType="java.lang.Long">
 		delete from
 		tb_group_details where group_id = #{groupId}

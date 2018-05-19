@@ -1,5 +1,6 @@
 package com.xd.cheekat.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,15 @@ public class GroupController {
 		String userId = request.getParameter("userId");
 		String members = request.getParameter("members");
 		String returnStr = JsonUtils.writeJson(0, 0, "参数为空");
+		System.out.println("groupName "+groupName+" members "+members);
+	try {
+		groupName = new String(groupName.getBytes("ISO-8859-1"),"UTF-8");
+		System.out.println("groupName "+groupName);
+	} catch (UnsupportedEncodingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+		
 		boolean isFriend = true;
 		if(!StringUtils.isBlank(userId) && !StringUtils.isBlank(members) && !StringUtils.isBlank(groupName)) {
 			String[] member = members.split(",");
@@ -242,7 +252,7 @@ public class GroupController {
 			if(group != null) {
 				GroupDetails gd = groupDetailsService.getGroupDetailsByGroupIdAndUserId(Long.parseLong(groupId), Long.parseLong(userId));
 				if(gd != null) {
-					if(gd.getIsAdmin() == 1) {
+//					if(gd.getIsAdmin() == 1) {
 						boolean isSuccess = ImUtils.updateGroup(groupName, group.getImGroupId());
 						if(!isSuccess) {
 							return JsonUtils.writeJson(0, 28, "修改失败");
@@ -250,9 +260,9 @@ public class GroupController {
 						group.setGroupName(groupName);
 						groupService.editGroup(group);
 						returnStr = JsonUtils.writeJson("修改成功",1);
-					}else {
-						returnStr = JsonUtils.writeJson(0, 14, "无权限修改");
-					}
+//					}else {
+//						returnStr = JsonUtils.writeJson(0, 14, "无权限修改");
+//					}
 				}else {
 					returnStr = JsonUtils.writeJson(0, 13, "群ID不存在");
 				}
@@ -329,15 +339,17 @@ public class GroupController {
 		}
 		List<Map<String,Object>> userList = groupDetailsService.getUserGroupDetails(group_id);
 		if(userList.size() ==  3){
-
-			//删除这个群
-			int i = groupService.deleteGroup(group_id);
-			if(i > 0){
-				ImUtils.deleteGroup(group.getImGroupId());
-				return  JsonUtils.writeJson(1, "退出成功", null, "object");
-			}else {
-				return JsonUtils.writeJson(1, 0, "退出失败");
+			boolean isDel = ImUtils.deleteGroup(group.getImGroupId());
+			if(isDel){
+				int i = groupService.deleteGroup(group_id);
+				if(i > 0){
+					
+					return  JsonUtils.writeJson(1, "退出成功", null, "object");
+				}
 			}
+			return JsonUtils.writeJson(1, 0, "退出失败");
+			//删除这个群
+			
 		}else if(userList.size() > 3){
 			//删除用户在群中的信息
 			if(is_Admin == 1){

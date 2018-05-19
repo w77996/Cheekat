@@ -1,11 +1,15 @@
 package com.xd.cheekat.service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.xd.cheekat.dao.GroupDao;
 import com.xd.cheekat.dao.GroupDetailsDao;
 import com.xd.cheekat.pojo.GroupDetails;
 @Service
@@ -13,6 +17,9 @@ public class GroupDetailsServiceImpl implements GroupDetailsService{
 
 	@Autowired
 	private GroupDetailsDao groupDetailsDao;
+	
+	@Autowired
+	private GroupDao groupDao;
 	
 	@Override
 	public List<Map<String, Object>> getUserGroupByImId(String groupId) {
@@ -45,11 +52,21 @@ public class GroupDetailsServiceImpl implements GroupDetailsService{
 		// TODO Auto-generated method stub
 		return groupDetailsDao.deleteUserFromGroup(userId,groupId);
 	}
-
+	@Transactional
 	@Override
 	public String deleteUserAdminFromGroup(long userId, long groupId) {
 		// TODO Auto-generated method stub
-		return groupDetailsDao.deleteUserAdminFromGroup(userId,groupId);
+		List<Map<String,Object>> secondUser = 	groupDao.getGroupSecondsMember(groupId, userId);
+		if(null == secondUser){
+			return null;
+		}
+		long secondUserId = (long) secondUser.get(0).get("member_id");
+		String sendUserName = (String)secondUser.get(0).get("user_name");
+		
+		groupDetailsDao.deleteUserFromGroup(userId,groupId);
+		
+		groupDetailsDao.tranSecondUserToAdmin(secondUserId, groupId);
+		return sendUserName;
 	}
 
 	@Override

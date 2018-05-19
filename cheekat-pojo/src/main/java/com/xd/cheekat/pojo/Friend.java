@@ -17,7 +17,7 @@ public class Friend implements Serializable{
 
     private Integer status;
 
-    private Date createTime;
+    private String createTime;
 
     public Long getFriendId() {
         return friendId;
@@ -51,11 +51,11 @@ public class Friend implements Serializable{
         this.status = status;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

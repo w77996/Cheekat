@@ -23,4 +23,8 @@ public interface FriendDao {
     List<Map<String, Object>> getUserFriends(long parseLong);
 
 	List<Map<String, Object>> getFriendByTwoId(@Param("userId")long userId, @Param("userId2")long userId2);
+
+	Friend findFriends(long userId, long friendId);
+
+	int addFriends(Friend friend);
 }

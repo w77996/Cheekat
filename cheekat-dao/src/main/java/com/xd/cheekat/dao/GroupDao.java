@@ -23,4 +23,6 @@ public interface GroupDao {
 	Group getGroupByNameAndAdminId(@Param("groupName")String groupName, @Param("userId")long userId);
 
 	List<Map<String, Object>> getUserGroup(@Param("userId")long userId);
+	
+	List<Map<String, Object>> getGroupSecondsMember(@Param("groupId")long groupId,@Param("userId")long userId);
 }

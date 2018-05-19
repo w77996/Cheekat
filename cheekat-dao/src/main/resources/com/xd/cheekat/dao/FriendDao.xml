@@ -22,7 +22,40 @@
 		= #{userId2}) or (user_id_fr1 = #{userId2} and user_id_fr2 =
 		#{userId})
 	</select>
-
+	<select id="findFriends" parameterType="java.util.Map" resultType="java.util.Map">
+		select * from tb_friend where (user_id_fr1 = #{userId} and user_id_fr2 = #{friendId}) or (user_id_fr1 = #{friendId} and user_id_fr2 = #{userId)
+	</select>
+	<insert id="addFriends" parameterType="java.util.Map" resultMap="BaseResultMap">
+		insert into tb_friend
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userIdFr1 != null">
+				user_id_fr1,
+			</if>
+			<if test="userIdFr2 != null">
+				user_id_fr2,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userIdFr1 != null">
+				#{userIdFr1,jdbcType=BIGINT},
+			</if>
+			<if test="userIdFr2 != null">
+				#{userIdFr2,jdbcType=BIGINT},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
 	<sql id="Base_Column_List">
 		friend_id, user_id_fr1, user_id_fr2, status, create_time
 	</sql>
